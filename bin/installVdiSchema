@@ -8,7 +8,7 @@ use InstallSchemaUtils qw( runSql dropSchemaSetTables dropSchemaSetPostgres getD
 use DBI;
 use Cwd;
 
-$| = 1;
+$| = 1; # flush each line on output 
 
 my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
 my $envStr = '$' . join(", \$", @envVars);
