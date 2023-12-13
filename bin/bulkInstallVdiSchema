@@ -54,13 +54,20 @@ foreach my $d (@dbDescriptors) {
 
 my $flag = $create? '--create' : '--drop';
 
+if ($drop) {
+    print "\nYou are about to UNINSTALL the VDI_DATASETS and VDI_CONTROL schemas on database:\n  $dbDescriptorsStr\nType 'I am not afraid' to proceed: ";
+    my $confirm = <STDIN>;
+    chomp $confirm;
+    die "You did not correctly confirm the db instance\n" unless 'I am not afraid' eq $confirm;
+}
+
 foreach my $d (@dbDescrips) {
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
-      my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.penn.apidb.org $flag --lifecycle $lifecycle --campus $campus";
-      $cmd = "$cmd 2>> $logFile";
-      print STDERR "Running cmd: $cmd\n";
-#      system("$cmd 2> $logFile") && print STDERR "Failed: $!\n";
+      my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.penn.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
+      $cmd = "$cmd >> $logFile";
+      print STDERR "\nRunning cmd: $cmd\n";
+      system($cmd) && print STDERR "Failed: $!\n";
     }
   }
 }

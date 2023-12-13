@@ -12,7 +12,7 @@ $| = 1; # flush each line on output
 
 my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
 my $envStr = '$' . join(", \$", @envVars);
-my ($dbName, $dbHost, $drop, $create, $lifecycle, $campus, $allowFailures);
+my ($dbName, $dbHost, $drop, $create, $lifecycle, $campus, $allowFailures, $dontAsk);
 
 &GetOptions("dbName=s" => \$dbName,
 	    "dbHost=s" => \$dbHost,
@@ -20,7 +20,8 @@ my ($dbName, $dbHost, $drop, $create, $lifecycle, $campus, $allowFailures);
 	    "create!" => \$create,
 	    "drop!" => \$drop,
 	    "lifecycle=s" => \$lifecycle,
-	    "campus=s" => \$campus);
+	    "campus=s" => \$campus,
+            "dontAsk!" => \$dontAsk);
 
 my @lifecycle = ('dev', 'qa', 'feat', 'beta', 'prod');
 my $lcStr = join(", ", @lifecycle);
@@ -47,7 +48,7 @@ Caution: only use --allowFailures if you know what you are doing
 
 Required environment variables: $envStr
 
-Log is printed to STDERR
+Log is printed to STDOUT
 
 Include the following in your bash environment or on the command line preceding the command below:
 export DB_PLATFORM=Oracle; export DB_USER=MY-LOGIN; export DB_PASS=MY-PASSWORD;
@@ -66,7 +67,7 @@ die "DB Platform must be either 'Oracle' or 'Postgres'\n" unless ($dbVendor eq '
 my $dbh = getDbh($dbName, $dbHost, $dbVendor, $login, $password);
 
 my $schemaSuffix = uc("${lifecycle}_${campus}");
-if ($drop) {
+if ($drop && !$dontAsk) {
     print "\nYou are about to UNINSTALL the VDI_DATASETS_$schemaSuffix and VDI_CONTROL_$schemaSuffix schemas on database:\n  $dbName\nType the name of the database to confirm: ";
     my $confirm = <STDIN>;
     chomp $confirm;
@@ -81,9 +82,9 @@ my @create = qw(
 
 if ($create) {
   for my $sqlFile (@create) {
-     print STDERR "\n==============================================================\n";
-     print STDERR "running $sqlFile for $schemaSuffix\n";
-     print STDERR "==============================================================\n";
+     print STDOUT "\n==============================================================\n";
+     print STDOUT "running $sqlFile for $schemaSuffix\n";
+     print STDOUT "==============================================================\n";
      my @sqlplusParamValues = ($schemaSuffix);
      my $filePath = cwd() . "/../lib/sql/$dbVendor/$sqlFile";
      runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
@@ -93,11 +94,11 @@ if ($create) {
   if ($dbVendor eq 'Oracle') {
     my $schemaSetStr = join ', ', map "'$_'", @schemas;
     my $count = dropSchemaSetTables($dbh, $schemaSetStr);
-    print STDERR "Dropped $count objects\n";
+    print STDOUT "Dropped $count objects\n";
   } else {
     my $count = dropSchemaSetPostgres($dbh, @schemas);
-    print STDERR "Dropped $count schemas\n";
+    print STDOUT "Dropped $count schemas\n";
   }
 }
 
-print STDERR "\nDone.\n";
+print STDOUT "\nDone.\n";
