@@ -64,6 +64,7 @@ if ($drop) {
 foreach my $d (@dbDescrips) {
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
+#      next if $d->{name} eq 'plas-inc' && $lifecycle eq 'dev' and $campus eq 'n';
       my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.penn.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
       $cmd = "$cmd >> $logFile";
       print STDERR "\nRunning cmd: $cmd\n";
