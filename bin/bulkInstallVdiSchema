@@ -1,0 +1,68 @@
+#!/usr/bin/perl
+
+use strict;
+use Getopt::Long;
+use Cwd;
+
+$| = 1;
+
+my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
+my $envStr = '$' . join(", \$", @envVars);
+my ($dbDescriptorsStr, $drop, $create, $logFile);
+
+my @lifecycles = ('dev', 'qa', 'beta', 'feat', 'prod');
+my @campuses = ('n', 's');
+
+&GetOptions("logFile=s" => \$logFile,
+	    "create!" => \$create,
+	    "drop!" => \$drop,
+	    "dbDescriptors=s" => \$dbDescriptorsStr);
+
+my @dbDescriptors = split(/,\S*/, $dbDescriptorsStr);
+
+if (($create + $drop != 1) || scalar(@dbDescriptors < 1)) {
+  die "
+
+Calls installVdiSchema for each database provided, for all lifecycles and both campuses
+
+Assumes all dbHosts are at penn.apidb.org
+
+Usage: bulkInstallVdiSchema --logFile file [--create | --drop] --dbDescriptors descriptors 
+
+Where:
+  - logFile: captures log of installVdiSchema runs
+  - create: creates the VDI schemas
+  - drop: drops the VDI schemas
+  - dbDescriptors: comma delimited list of descriptors of the form 'tnsname:pennHost', eg 'plas-inc:ares9'
+
+Required environment variables: $envStr
+
+Include the following in your bash environment or on the command line preceding the command below:
+export DB_PLATFORM=Oracle export DB_USER=MY-LOGIN export DB_PASS=MY-PASSWORD
+
+Example: ./bulkInstallVdiSchema --logFile myfile --create --dbDescriptors 'plas-inc:ares9, toxo-inc:ares8'
+";
+}
+
+for my $envVar (@envVars) { die "Missing env variable '$envVar'\n" unless $ENV{$envVar}; }
+
+my @dbDescrips;
+foreach my $d (@dbDescriptors) {
+  $d =~ /(.+):(\w+)/ || die "descriptor '$d' is not in form 'plas-inc:ares8'\n";
+  push(@dbDescrips, {name=>$1, host=>$2});
+}
+
+my $flag = $create? '--create' : '--drop';
+
+foreach my $d (@dbDescrips) {
+  foreach my $lifecycle (@lifecycles) {
+    foreach my $campus (@campuses) {
+      my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.penn.apidb.org $flag --lifecycle $lifecycle --campus $campus";
+      $cmd = "$cmd 2>> $logFile";
+      print STDERR "Running cmd: $cmd\n";
+#      system("$cmd 2> $logFile") && print STDERR "Failed: $!\n";
+    }
+  }
+}
+
+print STDERR "\nDone.\n";
