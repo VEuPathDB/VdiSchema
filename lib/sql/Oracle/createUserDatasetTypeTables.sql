@@ -6,7 +6,7 @@ FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_&1..dataset(dataset_id)
 
 CREATE unique INDEX VDI_DATASETS_&1..UD_GENEID_idx1 ON VDI_DATASETS_&1..UD_geneid (user_dataset_id, gene_source_id) tablespace indx;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_GeneId TO gus_w;
+GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_GeneId TO vdi_w;
 GRANT select ON VDI_DATASETS_&1..UD_GeneId TO gus_r;
 
 ----------------------------------------------------------------------------
@@ -27,9 +27,9 @@ create index VDI_DATASETS_&1..pset_idx1
 
 create sequence VDI_DATASETS_&1..UD_profileset_sq;
 
-grant insert, select, update, delete on VDI_DATASETS_&1..UD_ProfileSet to gus_w;
+grant insert, select, update, delete on VDI_DATASETS_&1..UD_ProfileSet to vdi_w;
 grant select on VDI_DATASETS_&1..UD_ProfileSet to gus_r;
-grant select on VDI_DATASETS_&1..UD_profileSet_sq to gus_w;
+grant select on VDI_DATASETS_&1..UD_profileSet_sq to vdi_w;
 
 ----------------------------------------------------------------------------
 create table VDI_DATASETS_&1..UD_ProtocolAppNode (
@@ -57,9 +57,9 @@ CREATE INDEX VDI_DATASETS_&1..ud_pan_idx5 on VDI_DATASETS_&1..ud_ProtocolAppNode
 
 create sequence VDI_DATASETS_&1..UD_ProtocolAppNode_sq;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_ProtocolAppNode TO gus_w;
+GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_ProtocolAppNode TO vdi_w;
 GRANT select ON VDI_DATASETS_&1..UD_ProtocolAppNode TO gus_r;
-GRANT select ON VDI_DATASETS_&1..UD_ProtocolAppNode_sq TO gus_w;
+GRANT select ON VDI_DATASETS_&1..UD_ProtocolAppNode_sq TO vdi_w;
 
 -----------------------------------------------------------------------------------------------------
 
@@ -83,9 +83,9 @@ CREATE unique INDEX VDI_DATASETS_&1..UD_NFE_idx3 ON VDI_DATASETS_&1..UD_NaFeatur
 
 create sequence VDI_DATASETS_&1..UD_NaFeatureExpression_sq;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_NaFeatureExpression TO gus_w;
+GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_NaFeatureExpression TO vdi_w;
 GRANT select ON VDI_DATASETS_&1..UD_NaFeatureExpression TO gus_r;
-GRANT select ON VDI_DATASETS_&1..UD_NaFeatureExpression_sq TO gus_w;
+GRANT select ON VDI_DATASETS_&1..UD_NaFeatureExpression_sq TO vdi_w;
 
 --------------------------------------------------------------------------------
 CREATE TABLE VDI_DATASETS_&1..ud_NaFeatureDiffResult (
@@ -111,11 +111,11 @@ CREATE TABLE VDI_DATASETS_&1..ud_NaFeatureDiffResult (
   PRIMARY KEY (na_feat_diff_res_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_NaFeatureDiffResult TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_NaFeatureDiffResult TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..ud_NaFeatureDiffResult TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..ud_NaFeatureDiffResult_sq;
-GRANT SELECT ON VDI_DATASETS_&1..ud_NaFeatureDiffResult_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..ud_NaFeatureDiffResult_sq TO vdi_w;
 
 --------------------------------------------------------------------------------
 -- based on datasetPresenters
@@ -131,7 +131,7 @@ create table VDI_DATASETS_&1..UD_Presenter (
   unique(user_dataset_id, property_name)
 );
 
-grant insert, select, update, delete on VDI_DATASETS_&1..UD_Presenter to gus_w;
+grant insert, select, update, delete on VDI_DATASETS_&1..UD_Presenter to vdi_w;
 grant select on VDI_DATASETS_&1..UD_Presenter to gus_r;
 
 
@@ -146,9 +146,9 @@ UNIQUE (name)
 );
 create sequence VDI_DATASETS_&1..UD_Sample_sq;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_Sample TO gus_w;
+GRANT insert, select, update, delete ON VDI_DATASETS_&1..UD_Sample TO vdi_w;
 GRANT select ON VDI_DATASETS_&1..UD_Sample TO gus_r;
-GRANT select ON VDI_DATASETS_&1..UD_Sample_sq TO gus_w;
+GRANT select ON VDI_DATASETS_&1..UD_Sample_sq TO vdi_w;
 
 -- -- potentially unnecessary: it is meant to be for SampleTables.Characteristics_table, but with the smaller amount of test data Oracle does full table access anyway
 -- create index VDI_DATASETS_&1..ud_Sample_ud_idx on VDI_DATASETS_&1..ud_Sample (user_dataset_id) tablespace indx;
@@ -172,11 +172,11 @@ GRANT select ON VDI_DATASETS_&1..UD_Sample_sq TO gus_w;
 --   FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_&1..DATASET(dataset_id),
 --   PRIMARY KEY (property_id)
 -- );
--- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_Property TO gus_w;
+-- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_Property TO vdi_w;
 -- GRANT SELECT ON VDI_DATASETS_&1..ud_Property TO gus_r;
 
 -- CREATE SEQUENCE VDI_DATASETS_&1..ud_Property_sq;
--- GRANT SELECT ON VDI_DATASETS_&1..ud_Property_sq TO gus_w;
+-- GRANT SELECT ON VDI_DATASETS_&1..ud_Property_sq TO vdi_w;
 
 -- -- potentially unnecessary: it is meant to be for SampleTables.Characteristics_table, but with the smaller amount of test data Oracle does full table access anyway
 -- create index VDI_DATASETS_&1..ud_Property_ud_idx on VDI_DATASETS_&1..ud_Property (user_dataset_id) tablespace indx;
@@ -199,7 +199,7 @@ GRANT select ON VDI_DATASETS_&1..UD_Sample_sq TO gus_w;
 -- create index VDI_DATASETS_&1..ud_SampleDetail_ud_idx on VDI_DATASETS_&1..ud_SampleDetail (user_dataset_id) tablespace indx;
 -- create index VDI_DATASETS_&1..ud_SampleDetail_pid_idx on VDI_DATASETS_&1..ud_SampleDetail (property_id) tablespace indx;
 
--- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_SampleDetail TO gus_w;
+-- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_SampleDetail TO vdi_w;
 -- GRANT SELECT ON VDI_DATASETS_&1..ud_SampleDetail TO gus_r;
 -- -- based on apidbtuning.TaxonRelativeAbundance
 -- -- without the extra protocol_app_node_id
@@ -222,7 +222,7 @@ GRANT select ON VDI_DATASETS_&1..UD_Sample_sq TO gus_w;
 --  FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_&1..DATASET(dataset_id),
 --  FOREIGN KEY (SAMPLE_ID) REFERENCES VDI_DATASETS_&1..ud_Sample (sample_id)
 -- );
--- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_Abundance TO gus_w;
+-- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_Abundance TO vdi_w;
 -- GRANT SELECT ON VDI_DATASETS_&1..ud_Abundance TO gus_r;
 
 -- create index VDI_DATASETS_&1..ud_Abundance_name_idx on VDI_DATASETS_&1..ud_Abundance (sample_id) tablespace indx;
@@ -244,7 +244,7 @@ GRANT select ON VDI_DATASETS_&1..UD_Sample_sq TO gus_w;
 --  FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_&1..DATASET(dataset_id),
 --  FOREIGN KEY (SAMPLE_ID) REFERENCES VDI_DATASETS_&1..ud_Sample (sample_id)
 -- );
--- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_AggregatedAbundance TO gus_w;
+-- GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ud_AggregatedAbundance TO vdi_w;
 -- GRANT SELECT ON VDI_DATASETS_&1..ud_AggregatedAbundance TO gus_r;
 
 -- create index VDI_DATASETS_&1..ud_AggregatedAbundance_name_idx on VDI_DATASETS_&1..ud_AggregatedAbundance (sample_id) tablespace indx;
