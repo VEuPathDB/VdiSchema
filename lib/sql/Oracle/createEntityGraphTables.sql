@@ -11,11 +11,11 @@ CREATE TABLE VDI_DATASETS_&1..Study (
  FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_&1..dataset(dataset_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..Study TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..Study TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..Study TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..Study_sq;
-GRANT SELECT ON VDI_DATASETS_&1..Study_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..Study_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..Study_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..study_ix_1 ON VDI_DATASETS_&1..study (external_database_release_id, stable_id, internal_abbrev, study_id) TABLESPACE indx;
@@ -34,11 +34,11 @@ CREATE TABLE VDI_DATASETS_&1..EntityType (
  PRIMARY KEY (entity_type_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityType TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityType TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityType TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..EntityType_sq;
-GRANT SELECT ON VDI_DATASETS_&1..EntityType_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..EntityType_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityType_sq TO gus_r;
 
 CREATE UNIQUE INDEX VDI_DATASETS_&1..entitytype_ix_1 ON VDI_DATASETS_&1..entitytype (study_id, entity_type_id) TABLESPACE indx;
@@ -55,11 +55,11 @@ CREATE TABLE VDI_DATASETS_&1..ProcessType (
  PRIMARY KEY (process_type_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ProcessType TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ProcessType TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..ProcessType TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..ProcessType_sq;
-GRANT SELECT ON VDI_DATASETS_&1..ProcessType_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..ProcessType_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..ProcessType_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..processtype_ix_1 ON VDI_DATASETS_&1..processtype (type_id, process_type_id) TABLESPACE indx;
@@ -81,11 +81,11 @@ CREATE TABLE VDI_DATASETS_&1..EntityAttributes (
 
 CREATE INDEX VDI_DATASETS_&1..entityattributes_ix_1 ON VDI_DATASETS_&1..entityattributes (entity_type_id, entity_attributes_id) TABLESPACE indx;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityAttributes TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityAttributes TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityAttributes TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..EntityAttributes_sq;
-GRANT SELECT ON VDI_DATASETS_&1..EntityAttributes_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..EntityAttributes_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityAttributes_sq TO gus_r;
 
 -----------------------------------------------------------
@@ -102,11 +102,11 @@ CREATE TABLE VDI_DATASETS_&1..EntityClassification (
 CREATE INDEX VDI_DATASETS_&1..entityclassification_ix_1 ON VDI_DATASETS_&1..entityclassification (entity_type_id, entity_attributes_id) TABLESPACE indx;
 CREATE INDEX VDI_DATASETS_&1..entityclassification_ix_2 ON VDI_DATASETS_&1..entityclassification (entity_attributes_id, entity_type_id) TABLESPACE indx;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityClassification TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityClassification TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityClassification TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..EntityClassification_sq;
-GRANT SELECT ON VDI_DATASETS_&1..EntityClassification_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..EntityClassification_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityClassification_sq TO gus_r;
 
 -----------------------------------------------------------
@@ -129,11 +129,11 @@ CREATE INDEX VDI_DATASETS_&1..ea_out_ix ON VDI_DATASETS_&1..processattributes (o
 
 CREATE INDEX VDI_DATASETS_&1..ea_ix_1 ON VDI_DATASETS_&1..processattributes (process_type_id, process_attributes_id) TABLESPACE indx;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ProcessAttributes TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ProcessAttributes TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..ProcessAttributes TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..ProcessAttributes_sq;
-GRANT SELECT ON VDI_DATASETS_&1..ProcessAttributes_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..ProcessAttributes_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..ProcessAttributes_sq TO gus_r;
 
 -----------------------------------------------------------
@@ -159,11 +159,11 @@ CREATE TABLE VDI_DATASETS_&1..EntityTypeGraph (
  PRIMARY KEY (entity_type_graph_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityTypeGraph TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityTypeGraph TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..EntityTypeGraph_sq;
-GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_1 ON VDI_DATASETS_&1..entitytypegraph (study_id, entity_type_id, parent_id, entity_type_graph_id) TABLESPACE indx;
@@ -183,11 +183,11 @@ CREATE TABLE VDI_DATASETS_&1..AttributeUnit (
  PRIMARY KEY (attribute_unit_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..AttributeUnit TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..AttributeUnit TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..AttributeUnit TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..AttributeUnit_sq;
-GRANT SELECT ON VDI_DATASETS_&1..AttributeUnit_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..AttributeUnit_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..AttributeUnit_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..attributeunit_ix_1 ON VDI_DATASETS_&1..attributeunit (entity_type_id, attr_ontology_term_id, unit_ontology_term_id, attribute_unit_id) TABLESPACE indx;
@@ -208,11 +208,11 @@ CREATE TABLE VDI_DATASETS_&1..ProcessTypeComponent (
  PRIMARY KEY (process_type_component_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ProcessTypeComponent TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..ProcessTypeComponent TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..ProcessTypeComponent TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..ProcessTypeComponent_sq;
-GRANT SELECT ON VDI_DATASETS_&1..ProcessTypeComponent_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..ProcessTypeComponent_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..ProcessTypeComponent_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..ptc_ix_1 ON VDI_DATASETS_&1..processtypecomponent (process_type_id, component_id, order_num, process_type_component_id) TABLESPACE indx;
@@ -253,11 +253,11 @@ CREATE TABLE VDI_DATASETS_&1..Attribute (
   CONSTRAINT ensure_ov_json CHECK (ordered_values is json)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..Attribute TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..Attribute TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..Attribute TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..Attribute_sq;
-GRANT SELECT ON VDI_DATASETS_&1..Attribute_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..Attribute_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..Attribute_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..attribute_ix_1 ON VDI_DATASETS_&1..attribute (entity_type_id, process_type_id, stable_id, attribute_id) TABLESPACE indx;
@@ -294,11 +294,11 @@ CREATE TABLE VDI_DATASETS_&1..AttributeGraph (
   CONSTRAINT ensure_prolbl_json CHECK (provider_label is json)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..AttributeGraph TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..AttributeGraph TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..AttributeGraph TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..AttributeGraph_sq;
-GRANT SELECT ON VDI_DATASETS_&1..AttributeGraph_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..AttributeGraph_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..AttributeGraph_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..attributegraph_ix_1 ON VDI_DATASETS_&1..attributegraph (study_id, ontology_term_id, parent_ontology_term_id, attribute_graph_id) TABLESPACE indx;
@@ -315,11 +315,11 @@ CREATE TABLE VDI_DATASETS_&1..StudyCharacteristic (
   PRIMARY KEY (study_characteristic_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..StudyCharacteristic TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..StudyCharacteristic TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..StudyCharacteristic TO gus_r;
 
 CREATE SEQUENCE VDI_DATASETS_&1..StudyCharacteristic_sq;
-GRANT SELECT ON VDI_DATASETS_&1..StudyCharacteristic_sq TO gus_w;
+GRANT SELECT ON VDI_DATASETS_&1..StudyCharacteristic_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..StudyCharacteristic_sq TO gus_r;
 
 CREATE INDEX VDI_DATASETS_&1..StudyCharacteristic_ix_1 ON VDI_DATASETS_&1..StudyCharacteristic (study_id, attribute_id, value) TABLESPACE indx;
@@ -354,7 +354,7 @@ and ea.ENTITY_TYPE_ID = et2.entity_type_id
 and et2.study_id = s2.study_id;
 
 GRANT select ON VDI_DATASETS_&1..entityattributes_bfv TO gus_r;
-GRANT select ON VDI_DATASETS_&1..entityattributes_bfv TO gus_w;
+GRANT select ON VDI_DATASETS_&1..entityattributes_bfv TO vdi_w;
 
 ----------------------------------------------------------------
 
@@ -372,9 +372,9 @@ CREATE TABLE VDI_DATASETS_&1..AnnotationProperties (
 
 CREATE SEQUENCE VDI_DATASETS_&1..AnnotationProperties_sq;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_&1..AnnotationProperties TO gus_w;
+GRANT insert, select, update, delete ON VDI_DATASETS_&1..AnnotationProperties TO vdi_w;
 GRANT select ON VDI_DATASETS_&1..AnnotationProperties TO gus_r;
-GRANT select ON VDI_DATASETS_&1..AnnotationProperties_sq TO gus_w;
+GRANT select ON VDI_DATASETS_&1..AnnotationProperties_sq TO vdi_w;
 
 
 
