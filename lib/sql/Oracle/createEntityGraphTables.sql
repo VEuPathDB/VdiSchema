@@ -20,45 +20,20 @@ CREATE INDEX VDI_DATASETS_&1..study_ix_1 ON VDI_DATASETS_&1..study (stable_id, i
 
 -----------------------------------------------------------
 
-CREATE TABLE VDI_DATASETS_&1..EntityType (
- entity_type_id            NUMBER(12) NOT NULL,
- isa_type                     VARCHAR2(50)
- PRIMARY KEY (entity_type_id)
-);
-
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityType TO vdi_w;
-GRANT SELECT ON VDI_DATASETS_&1..EntityType TO gus_r;
-
-CREATE SEQUENCE VDI_DATASETS_&1..EntityType_sq;
-GRANT SELECT ON VDI_DATASETS_&1..EntityType_sq TO vdi_w;
-GRANT SELECT ON VDI_DATASETS_&1..EntityType_sq TO gus_r;
-
-CREATE UNIQUE INDEX VDI_DATASETS_&1..entitytype_ix_1 ON VDI_DATASETS_&1..entitytype (study_id, entity_type_id) TABLESPACE indx;
-CREATE UNIQUE INDEX VDI_DATASETS_&1..entitytype_ix_2 ON VDI_DATASETS_&1..entitytype (type_id, entity_type_id) TABLESPACE indx;
-CREATE UNIQUE INDEX VDI_DATASETS_&1..entitytype_ix_3 ON VDI_DATASETS_&1..entitytype (study_id, internal_abbrev) TABLESPACE indx;
-
--- -----------------------------------------------------------
-
-
------------------------------------------------------------
-
 CREATE TABLE VDI_DATASETS_&1..EntityTypeGraph (
  entity_type_graph_id           NUMBER(12) NOT NULL,
  stable_id                    varchar2(255),
  study_stable_id                varchar2(200),
  parent_stable_id             varchar2(255),
  internal_abbrev              VARCHAR2(50) NOT NULL,
- entity_type_id            NUMBER(12) NOT NULL,
- description                  VARCHAR2(4000),
+  description                  VARCHAR2(4000),
  display_name                 VARCHAR2(200) NOT NULL,
  display_name_plural          VARCHAR2(200),
  has_attribute_collections    NUMBER(1),
  is_many_to_one_with_parent   NUMBER(1),
  cardinality                  NUMBER(38,0),
  FOREIGN KEY (study_id) REFERENCES VDI_DATASETS_&1..study,
- FOREIGN KEY (parent_id) REFERENCES VDI_DATASETS_&1..entitytype,
- FOREIGN KEY (entity_type_id) REFERENCES VDI_DATASETS_&1..entitytype,
- PRIMARY KEY (entity_type_graph_id)
+  PRIMARY KEY (entity_type_graph_id)
 );
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_&1..EntityTypeGraph TO vdi_w;
@@ -68,9 +43,8 @@ CREATE SEQUENCE VDI_DATASETS_&1..EntityTypeGraph_sq;
 GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph_sq TO gus_r;
 
-CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_1 ON VDI_DATASETS_&1..entitytypegraph (study_id, entity_type_id, parent_stable_id, entity_type_graph_id) TABLESPACE indx;
+CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_1 ON VDI_DATASETS_&1..entitytypegraph (study_id, stable_id, parent_stable_id, entity_type_graph_id) TABLESPACE indx;
 CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_2 ON VDI_DATASETS_&1..entitytypegraph (parent_stable_id, entity_type_graph_id) TABLESPACE indx;
-CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_3 ON VDI_DATASETS_&1..entitytypegraph (entity_type_id, entity_type_graph_id) TABLESPACE indx;
 
 
 exit;
