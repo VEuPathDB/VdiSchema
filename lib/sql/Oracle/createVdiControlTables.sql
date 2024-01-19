@@ -67,7 +67,7 @@ SELECT
 FROM
     vdi_control_&1..dataset_visibility v,
     vdi_control_&1..dataset d,
-    vdi_control_dev_n.dataset_meta m,
+    vdi_control_&1..dataset_meta m,
     (SELECT dataset_id
      FROM vdi_control_&1..dataset_install_message
      WHERE install_type = 'meta'
