@@ -14,7 +14,7 @@ CREATE SEQUENCE VDI_DATASETS_&1..Study_sq;
 GRANT SELECT ON VDI_DATASETS_&1..Study_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..Study_sq TO gus_r;
 
-CREATE INDEX VDI_DATASETS_&1..study_ix_1 ON VDI_DATASETS_&1..study (stable_id, internal_abbrev, study_id) TABLESPACE indx;
+CREATE INDEX VDI_DATASETS_&1..study_ix_1 ON VDI_DATASETS_&1..study (stable_id, internal_abbrev) TABLESPACE indx;
 
 -----------------------------------------------------------
 
