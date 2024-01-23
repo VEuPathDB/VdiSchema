@@ -33,7 +33,7 @@ CREATE TABLE VDI_DATASETS_&1..EntityTypeGraph (
  has_attribute_collections    NUMBER(1),
  is_many_to_one_with_parent   NUMBER(1),
  cardinality                  NUMBER(38,0),
- FOREIGN KEY (study_id) REFERENCES VDI_DATASETS_&1..study,
+ FOREIGN KEY (study_stable_id) REFERENCES VDI_DATASETS_&1..study,
   PRIMARY KEY (entity_type_graph_id)
 );
 
@@ -44,7 +44,7 @@ CREATE SEQUENCE VDI_DATASETS_&1..EntityTypeGraph_sq;
 GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_&1..EntityTypeGraph_sq TO gus_r;
 
-CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_1 ON VDI_DATASETS_&1..entitytypegraph (study_id, stable_id, parent_stable_id, entity_type_graph_id) TABLESPACE indx;
+CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_1 ON VDI_DATASETS_&1..entitytypegraph (study_stable_id, stable_id, parent_stable_id, entity_type_graph_id) TABLESPACE indx;
 CREATE INDEX VDI_DATASETS_&1..entitytypegraph_ix_2 ON VDI_DATASETS_&1..entitytypegraph (parent_stable_id, entity_type_graph_id) TABLESPACE indx;
 
 
