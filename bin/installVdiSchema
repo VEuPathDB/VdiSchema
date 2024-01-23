@@ -6,7 +6,6 @@ use lib "$FindBin::Bin/../lib/perl";
 use Getopt::Long;
 use SchemaInstallUtils qw( runSql dropSchemaSetTables dropSchemaSetPostgres getDbh ); # do not use $GUS_HOME
 use DBI;
-use Cwd;
 
 $| = 1; # flush each line on output 
 
@@ -86,7 +85,7 @@ if ($create) {
      print STDOUT "running $sqlFile for $schemaSuffix\n";
      print STDOUT "==============================================================\n";
      my @sqlplusParamValues = ($schemaSuffix);
-     my $filePath = cwd() . "/../lib/sql/$dbVendor/$sqlFile";
+     my $filePath = "$FindBin::Bin/../lib/sql/$dbVendor/$sqlFile";
      runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
   }
 } else {

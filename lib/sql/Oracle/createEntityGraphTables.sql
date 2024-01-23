@@ -23,6 +23,7 @@ CREATE INDEX VDI_DATASETS_&1..study_ix_1 ON VDI_DATASETS_&1..study (stable_id, i
 CREATE TABLE VDI_DATASETS_&1..EntityTypeGraph (
  entity_type_graph_id           NUMBER(12) NOT NULL,
  stable_id                    varchar2(255),
+ study_id            NUMBER(12) NOT NULL,
  study_stable_id                varchar2(200),
  parent_stable_id             varchar2(255),
  internal_abbrev              VARCHAR2(50) NOT NULL,
