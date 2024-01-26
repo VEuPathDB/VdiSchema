@@ -10,18 +10,17 @@ my $DRYRUN = 1;
 
 my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
 my $envStr = '$' . join(", \$", @envVars);
-my ($schemaPrefix, $dbNamesStr, $sqlFile);
+my ($dbNamesStr, $sqlFile);
 
 my @lifecycles = ('dev', 'qa', 'beta', 'feat', 'prod');
 my @campuses = ('n', 's');
 
-&GetOptions("schemaPrefix" => \$schemaPrefix,
-	    "dbNames=s" => \$dbNamesStr,
+&GetOptions("dbNames=s" => \$dbNamesStr,
 	    "sqlFile=s" => \$sqlFile);
 
-my @dbNames = split(/,\S*/, $dbNamesStr);
+my @dbNames = split(/,\s*/, $dbNamesStr);
 
-if (($schemaPrefix ne 'VDI_CONTROL' and $schemaPrefix ne 'VDI_DATASETS') || scalar(@dbNames < 1)) {
+if (scalar @dbNames < 1) {
   die "
 
 Iterates through all VDI schemas (either control or datasets) on the specified databases, and applies a db patch found in provided SQL file.
@@ -48,8 +47,6 @@ die "Can't find sql file $sqlFile\n" unless -e $sqlFile;
 open my $fh, '<', $sqlFile or die "error opening $sqlFile: $!";
 my $sql = do { local $/; <$fh> };
 
-print STDERR "SQL: $sql\n";
-
 foreach my $dbname (@dbNames) {
   my $dbh = DBI->connect("dbi:Oracle:$dbname", $ENV{DB_USER}, $ENV{DB_PASS})
     || die "Couldn't connect to database $dbname: " . DBI->errstr;
@@ -58,12 +55,17 @@ foreach my $dbname (@dbNames) {
   print STDERR "Database: $dbname\n";
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
-      print STDERR "Schema: ${schemaPrefix}_${lifecycle}_$campus\n";
+      my $suffix = "${lifecycle}_$campus";
+      my $newSql = $sql;
+      $sql =~ s/\@SUFFIX\@/$suffix/g;
+      print STDERR "DB: $dbname SUFFIX: $suffix\n";
+      print STDERR "SQL: $sql\n";
       unless ($DRYRUN) {
 	$dbh->do($sql);
       }
     }
   }
+  $dbh->disconnect();
 }
 
 print STDERR "\nDone.\n";
