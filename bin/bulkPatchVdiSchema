@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+
+use strict;
+use Getopt::Long;
+use DBI;
+
+$| = 1;
+
+my $DRYRUN = 1;
+
+my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
+my $envStr = '$' . join(", \$", @envVars);
+my ($schemaPrefix, $dbNamesStr, $sqlFile);
+
+my @lifecycles = ('dev', 'qa', 'beta', 'feat', 'prod');
+my @campuses = ('n', 's');
+
+&GetOptions("schemaPrefix" => \$schemaPrefix,
+	    "dbNames=s" => \$dbNamesStr,
+	    "sqlFile=s" => \$sqlFile);
+
+my @dbNames = split(/,\S*/, $dbNamesStr);
+
+if (($schemaPrefix ne 'VDI_CONTROL' and $schemaPrefix ne 'VDI_DATASETS') || scalar(@dbNames < 1)) {
+  die "
+
+Iterates through all VDI schemas (either control or datasets) on the specified databases, and applies a db patch.
+
+Assumes all dbHosts are at penn.apidb.org
+
+Usage: bulkPatchVdiSchema --schemaPrefix [vdi_control | vdi_datasets] --dbNames 'plas-inc, toxo-inc' --sqlFile myFile
+
+Required environment variables: $envStr
+
+Include the following in your bash environment or on the command line preceding the command below:
+export DB_PLATFORM=Oracle export DB_USER=MY-LOGIN export DB_PASS=MY-PASSWORD
+
+Example: ./bulkPatchVdiSchema --schemaPrefix VDI_CONTROL --dbNames 'plas-inc, toxo-inc' --sqlFile myfile
+";
+}
+
+for my $envVar (@envVars) { die "Missing env variable '$envVar'\n" unless $ENV{$envVar}; }
+
+die "Can't find sql file $sqlFile\n" unless -e $sqlFile;
+
+open my $fh, '<', $sqlFile or die "error opening $sqlFile: $!";
+my $sql = do { local $/; <$fh> };
+
+print STDERR "SQL: $sql\n";
+
+foreach my $dbname (@dbNames) {
+  my $dbh = DBI->connect("dbi:Oracle:$dbname", $ENV{DB_USER}, $ENV{DB_PASS})
+    || die "Couldn't connect to database $dbname: " . DBI->errstr;
+  $dbh->{RaiseError} = 1;
+  $dbh->{AutoCommit} = 1;
+  print STDERR "Database: $dbname\n";
+  foreach my $lifecycle (@lifecycles) {
+    foreach my $campus (@campuses) {
+      print STDERR "Schema: ${schemaPrefix}_${lifecycle}_$campus\n";
+      unless ($DRYRUN) {
+	$dbh->do($sql);
+      }
+    }
+  }
+}
+
+print STDERR "\nDone.\n";
