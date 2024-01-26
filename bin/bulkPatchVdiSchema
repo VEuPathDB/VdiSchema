@@ -69,4 +69,4 @@ foreach my $dbname (@dbNames) {
 }
 
 my $s = $DRYRUN? "DRYRUN " : "";
-print STDERR "\n$sDone.\n";
+print STDERR "\n${s}Done.\n";
