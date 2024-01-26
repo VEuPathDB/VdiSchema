@@ -24,7 +24,9 @@ my @dbNames = split(/,\S*/, $dbNamesStr);
 if (($schemaPrefix ne 'VDI_CONTROL' and $schemaPrefix ne 'VDI_DATASETS') || scalar(@dbNames < 1)) {
   die "
 
-Iterates through all VDI schemas (either control or datasets) on the specified databases, and applies a db patch.
+Iterates through all VDI schemas (either control or datasets) on the specified databases, and applies a db patch found in provided SQL file.
+
+SQL file can include macro \@SCHEMA\@
 
 Assumes all dbHosts are at penn.apidb.org
 
