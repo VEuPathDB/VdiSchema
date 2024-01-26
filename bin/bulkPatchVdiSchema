@@ -6,7 +6,7 @@ use DBI;
 
 $| = 1;
 
-my $DRYRUN = 1;
+my $DRYRUN = 0;
 
 my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
 my $envStr = '$' . join(", \$", @envVars);
@@ -57,11 +57,11 @@ foreach my $dbname (@dbNames) {
     foreach my $campus (@campuses) {
       my $suffix = "${lifecycle}_$campus";
       my $newSql = $sql;
-      $sql =~ s/\@SUFFIX\@/$suffix/g;
+      $newSql =~ s/\@SUFFIX\@/$suffix/g;
       print STDERR "DB: $dbname SUFFIX: $suffix\n";
-      print STDERR "SQL: $sql\n";
+      print STDERR "SQL: $newSql\n";
       unless ($DRYRUN) {
-	$dbh->do($sql);
+	$dbh->do($newSql);
       }
     }
   }
