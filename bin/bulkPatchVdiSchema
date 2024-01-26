@@ -68,4 +68,5 @@ foreach my $dbname (@dbNames) {
   $dbh->disconnect();
 }
 
-print STDERR "\nDone.\n";
+my $s = $DRYRUN? "DRYRUN " : "";
+print STDERR "\n$sDone.\n";
