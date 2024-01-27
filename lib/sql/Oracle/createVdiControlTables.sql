@@ -59,10 +59,15 @@ CREATE TABLE VDI_CONTROL_&1..dataset_project (
 CREATE VIEW vdi_control_&1..dataset_availability AS
 SELECT
     v.dataset_id as user_dataset_id,
-    v.user_id
+    v.user_id,
+    d.type_name,
+    d.type_version,
+    m.name,
+    m.description
 FROM
     vdi_control_&1..dataset_visibility v,
     vdi_control_&1..dataset d,
+    vdi_control_&1..dataset_meta m,
     (SELECT dataset_id
      FROM vdi_control_&1..dataset_install_message
      WHERE install_type = 'meta'
@@ -75,6 +80,7 @@ FROM
     ) i
     WHERE v.dataset_id = i.dataset_id
     and v.dataset_id = d.dataset_id
+    and v.dataset_id = m.dataset_id
     and d.is_deleted = 0;
 
 GRANT SELECT ON VDI_CONTROL_&1..dataset                 TO gus_r;
