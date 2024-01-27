@@ -4,11 +4,13 @@ SELECT
     v.user_id,
     d.type_name as type,
     m.name,
-    m.description
+    m.description,
+    p.project_id
 FROM
     VDI_CONTROL_@SUFFIX@.dataset_visibility v,
     VDI_CONTROL_@SUFFIX@.dataset d,
     VDI_CONTROL_@SUFFIX@.dataset_meta m,
+    VDI_CONTROL_@SUFFIX@.dataset_project p,
     (SELECT dataset_id
      FROM VDI_CONTROL_@SUFFIX@.dataset_install_message
      WHERE install_type = 'meta'
@@ -21,5 +23,7 @@ FROM
     ) i
     WHERE v.dataset_id = i.dataset_id
     and v.dataset_id = d.dataset_id
+    and v.dataset_id = p.dataset_id
     and v.dataset_id = m.dataset_id
-    and d.is_deleted = 0;
+    and d.is_deleted = 0
+
