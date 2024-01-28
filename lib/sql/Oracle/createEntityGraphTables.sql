@@ -4,6 +4,7 @@ CREATE TABLE VDI_DATASETS_&1..Study (
  internal_abbrev              varchar2(75),
  modification_date            DATE NOT NULL,
  PRIMARY KEY (stable_id),
+ UNIQUE(user_dataset_id),
   FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_&1..dataset(dataset_id)
 );
 
