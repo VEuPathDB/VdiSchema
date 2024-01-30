@@ -19,6 +19,13 @@ CREATE INDEX VDI_DATASETS_&1..study_ix_1 ON VDI_DATASETS_&1..study (stable_id, i
 
 -----------------------------------------------------------
 
+CREATE VIEW  VDI_DATASETS_&1..UserStudyDatasetId as
+SELECT 'EDAUD_' || user_dataset_id as dataset_stable_id, stable_id as study_stable_id
+FROM VDI_DATASETS_&1..study;
+
+GRANT SELECT ON VDI_DATASETS_&1..UserStudyDatasetId TO gus_r;
+
+-----------------------------------------------------------
 CREATE TABLE VDI_DATASETS_&1..EntityTypeGraph (
  stable_id                    varchar2(255),
  study_stable_id                varchar2(200),
