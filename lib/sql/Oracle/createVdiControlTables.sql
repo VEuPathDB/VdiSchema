@@ -54,11 +54,13 @@ CREATE TABLE VDI_CONTROL_&1..dataset_project (
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
+-- Install process heartbeats.  Used to track active installs and locate
+-- installs that were interrupted mid-process and left in a broken state.
 CREATE TABLE VDI_CONTROL_&1..install_activity (
   dataset_id   VARCHAR2(32) NOT NULL
 , install_type VARCHAR2(64) NOT NULL
 , last_update  TIMESTAMP WITH TIME ZONE NOT NULL
-, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
+, FOREIGN KEY (dataset_id, install_type) REFERENCES VDI_CONTROL_&1..dataset_install_message (dataset_id, install_type)
 , PRIMARY KEY (dataset_id, install_type)
 );
 
