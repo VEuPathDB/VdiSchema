@@ -54,6 +54,14 @@ CREATE TABLE VDI_CONTROL_&1..dataset_project (
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
+CREATE TABLE VDI_CONTROL_&1..install_activity (
+  dataset_id   VARCHAR2(32) NOT NULL
+, install_type VARCHAR2(64) NOT NULL
+, last_update  TIMESTAMP WITH TIME ZONE NOT NULL
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&..dataset(dataset_id)
+, PRIMARY KEY (dataset_id, install_type)
+);
+
 -- convenience view showing datasets visible to a user that are fully installed, and not deleted
 -- application code should use this view to find datasets a user can use
 CREATE VIEW VDI_CONTROL_&1..AvailableUserDatasets AS
