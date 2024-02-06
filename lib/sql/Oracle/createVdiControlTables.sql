@@ -58,7 +58,7 @@ CREATE TABLE VDI_CONTROL_&1..install_activity (
   dataset_id   VARCHAR2(32) NOT NULL
 , install_type VARCHAR2(64) NOT NULL
 , last_update  TIMESTAMP WITH TIME ZONE NOT NULL
-, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&..dataset(dataset_id)
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 , PRIMARY KEY (dataset_id, install_type)
 );
 
