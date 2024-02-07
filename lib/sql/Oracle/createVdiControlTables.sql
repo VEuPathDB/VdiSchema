@@ -54,6 +54,16 @@ CREATE TABLE VDI_CONTROL_&1..dataset_project (
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
+-- Install process heartbeats.  Used to track active installs and locate
+-- installs that were interrupted mid-process and left in a broken state.
+CREATE TABLE VDI_CONTROL_&1..dataset_install_activity (
+  dataset_id   VARCHAR2(32) NOT NULL
+, install_type VARCHAR2(64) NOT NULL
+, last_update  TIMESTAMP WITH TIME ZONE NOT NULL
+, FOREIGN KEY (dataset_id, install_type) REFERENCES VDI_CONTROL_&1..dataset_install_message (dataset_id, install_type)
+, PRIMARY KEY (dataset_id, install_type)
+);
+
 -- convenience view showing datasets visible to a user that are fully installed, and not deleted
 -- application code should use this view to find datasets a user can use
 CREATE VIEW VDI_CONTROL_&1..AvailableUserDatasets AS
@@ -88,6 +98,7 @@ FROM
 GRANT SELECT ON VDI_CONTROL_&1..dataset                 TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..sync_control            TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_install_message TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_install_activity TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_meta            TO gus_r;
@@ -96,6 +107,7 @@ GRANT SELECT ON VDI_CONTROL_&1..AvailableUserDatasets   TO gus_r;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset                 TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..sync_control            TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_install_message TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_install_activity TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project         TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta            TO vdi_w;
