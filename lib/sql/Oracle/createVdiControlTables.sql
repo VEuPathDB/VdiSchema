@@ -56,7 +56,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset_project (
 
 -- Install process heartbeats.  Used to track active installs and locate
 -- installs that were interrupted mid-process and left in a broken state.
-CREATE TABLE VDI_CONTROL_&1..install_activity (
+CREATE TABLE VDI_CONTROL_&1..dataset_install_activity (
   dataset_id   VARCHAR2(32) NOT NULL
 , install_type VARCHAR2(64) NOT NULL
 , last_update  TIMESTAMP WITH TIME ZONE NOT NULL
@@ -98,6 +98,7 @@ FROM
 GRANT SELECT ON VDI_CONTROL_&1..dataset                 TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..sync_control            TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_install_message TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_install_activity TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_meta            TO gus_r;
@@ -106,6 +107,7 @@ GRANT SELECT ON VDI_CONTROL_&1..AvailableUserDatasets   TO gus_r;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset                 TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..sync_control            TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_install_message TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_install_activity TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project         TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta            TO vdi_w;
