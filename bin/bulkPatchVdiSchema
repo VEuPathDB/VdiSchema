@@ -25,7 +25,7 @@ if (scalar @dbNames < 1) {
 
 Iterates through all VDI schemas (either control or datasets) on the specified databases, and applies a db patch found in provided SQL file.
 
-SQL file can include macro \@SCHEMA\@
+SQL file can include macro \@SUFFIX\@
 
 Assumes all dbHosts are at penn.apidb.org
 
@@ -36,9 +36,9 @@ Required environment variables: $envStr
 Include the following in your bash environment or on the command line preceding the command below:
 export DB_PLATFORM=Oracle export DB_USER=MY-LOGIN export DB_PASS=MY-PASSWORD
 
-Example: ./bulkPatchVdiSchema --schemaPrefix VDI_CONTROL --dbNames 'plas-inc, toxo-inc' --sqlFile myfile
+Example: ./bulkPatchVdiSchema --dbNames 'plas-inc, toxo-inc' --sqlFile myfile
 
-Full list of inc databases: ameb-inc,cryp-inc,eda-inc,fung-inc,giar-inc,host-inc,micr-inc,piro-inc,plas-inc,toxo-inc,tryp-inc,tvag-inc,vect-inc
+Full list of inc databases: ameb-inc,cryp-inc,eda-inc,fung-inc,giar-inc,host-inc,micr-inc,piro-inc,plas-inc,toxo-inc,tryp-inc,tvag-inc,vect-inc,eda-inc
 ";
 }
 
