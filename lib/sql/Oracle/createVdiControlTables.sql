@@ -11,6 +11,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset (
 , type_name    VARCHAR2(64)             NOT NULL
 , type_version VARCHAR2(64)             NOT NULL
 , is_deleted   NUMBER       DEFAULT 0   NOT NULL
+, is_public    NUMBER       DEFAULT 0   NOT NULL
 );
 
 
@@ -70,12 +71,12 @@ CREATE VIEW VDI_CONTROL_&1..AvailableUserDatasets AS
 SELECT
     v.dataset_id as user_dataset_id,
     v.user_id,
+    d.is_public,
     d.type_name as type,
     m.name,
     m.description,
     p.project_id
 FROM
-    VDI_CONTROL_&1..dataset_visibility v,
     VDI_CONTROL_&1..dataset d,
     VDI_CONTROL_&1..dataset_meta m,
     VDI_CONTROL_&1..dataset_project p,
@@ -88,7 +89,14 @@ FROM
      FROM VDI_CONTROL_&1..dataset_install_message
      WHERE install_type = 'data'
      AND status = 'complete'
-    ) i
+    ) i,
+    (SELECT dataset_id, user_id
+     FROM VDI_CONTROL_&1..dataset_visibility
+     UNION
+     SELECT dataset_id, NULL as user_id
+     FROM VDI_CONTROL_&1..dataset d
+     WHERE d.is_public = 1
+    ) v
     WHERE v.dataset_id = i.dataset_id
     and v.dataset_id = d.dataset_id
     and v.dataset_id = m.dataset_id
