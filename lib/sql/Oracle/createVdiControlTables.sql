@@ -71,12 +71,14 @@ CREATE VIEW VDI_CONTROL_&1..AvailableUserDatasets AS
 SELECT
     v.dataset_id as user_dataset_id,
     v.user_id,
-    d.is_public,
+    o.is_owner,
     d.type_name as type,
+    d.is_public,
     m.name,
     m.description,
     p.project_id
 FROM
+    VDI_CONTROL_&1..dataset_visibility v,
     VDI_CONTROL_&1..dataset d,
     VDI_CONTROL_&1..dataset_meta m,
     VDI_CONTROL_&1..dataset_project p,
@@ -90,18 +92,24 @@ FROM
      WHERE install_type = 'data'
      AND status = 'complete'
     ) i,
-    (SELECT dataset_id, user_id
-     FROM VDI_CONTROL_&1..dataset_visibility
-     UNION
-     SELECT dataset_id, NULL as user_id
-     FROM VDI_CONTROL_&1..dataset d
-     WHERE d.is_public = 1
-    ) v
-    WHERE v.dataset_id = i.dataset_id
-    and v.dataset_id = d.dataset_id
-    and v.dataset_id = m.dataset_id
-    and v.dataset_id = p.dataset_id
+    (select dataset_id, owner as user_id, 1 as is_owner
+    from VDI_CONTROL_&1..dataset
+    union 
+    select x.dataset_id, x.user_id, 0 as is_owner
+    from (select dataset_id, user_id 
+          from VDI_CONTROL_&1..dataset_visibility
+          minus
+          select dataset_id, owner as user_id
+          from VDI_CONTROL_&1..dataset) x
+    ) o
+    WHERE d.dataset_id = i.dataset_id
+    and v.user_id = o.user_id
+    and d.dataset_id = v.dataset_id
+    and d.dataset_id = m.dataset_id
+    and d.dataset_id = p.dataset_id
+    and d.dataset_id = o.dataset_id
     and d.is_deleted = 0;
+
 
 GRANT SELECT ON VDI_CONTROL_&1..dataset                 TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..sync_control            TO gus_r;
