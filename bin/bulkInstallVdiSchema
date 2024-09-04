@@ -8,41 +8,48 @@ $| = 1;
 
 my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
 my $envStr = '$' . join(", \$", @envVars);
-my ($dbDescriptorsStr, $campusName, $drop, $create, $logFile);
-
-my @lifecycles = ('dev', 'qa', 'beta', 'feat', 'prod');
-my @campuses = ('n', 's');
+my ($dbDescriptorsStr, $campusName, $drop, $create, $logFile, $dryRun, $campusesStr, $lifeCyclesStr);
 
 &GetOptions("logFile=s" => \$logFile,
-	    "campusName=s" => \$campusName,
+	    "dbCampusName=s" => \$campusName,
 	    "create!" => \$create,
 	    "drop!" => \$drop,
-	    "dbDescriptors=s" => \$dbDescriptorsStr);
+	    "dryRun!" => \$dryRun,
+	    "dbDescriptors=s" => \$dbDescriptorsStr,
+            "campuses=s" => \$campusesStr,
+            "lifecycles=s" => \$lifeCyclesStr);
 
 my @dbDescriptors = split(/,\S*/, $dbDescriptorsStr);
+my @campuses = split(/,\S*/, $campusesStr);
+my @lifecycles = split(/,\S*/, $lifeCyclesStr);
 
-if (($create + $drop != 1) || scalar(@dbDescriptors < 1)) {
+if (($create + $drop != 1) || scalar(@dbDescriptors < 1) || scalar(@campuses) < 1 || scalar(@lifecycles) < 1) {
   die "
 
-Calls installVdiSchema for each database provided, for all lifecycles and both campuses
+Calls installVdiSchema for each database provided, for all lifecycles and both campuses.
+
+Can target multiple databases, but they all must be on the same campus (controlled by the --dbCampusName)
 
 Host is of the form ares8 or peach
 
-Usage: bulkInstallVdiSchema --logFile file --campusName [--create | --drop] --dbDescriptors descriptors 
+Usage: bulkInstallVdiSchema --logFile file --campusName [--create | --drop] --dbDescriptors descriptors --campuses campuses --lifeCycles lifecycles [--dryRun]
 
 Where:
   - logFile: captures log of installVdiSchema runs
-  - campusName:  penn | uga
+  - dbCampusName:  penn | uga  -- this is the campus that the target databases are on
   - create: creates the VDI schemas
   - drop: drops the VDI schemas
   - dbDescriptors: comma delimited list of descriptors of the form 'tnsname:pennHost', eg 'plas-inc:ares9'
+  - campuses: comma delimited list of campuses, eg 'n, s' -- these are the schemas in the target database to change.  Eg, _n and _s in eda-inc (which is at Penn)
+  - lifecycles: comma delimited list of life cycles, eg 'dev, qa, beta, feat, prod'
+  - dryRun: if provided, print out the installVdiSchema commands we will run, but do not run them
 
 Required environment variables: $envStr
 
 Include the following in your bash environment or on the command line preceding the command below:
 export DB_PLATFORM=Oracle export DB_USER=MY-LOGIN export DB_PASS=MY-PASSWORD
 
-Example: ./bulkInstallVdiSchema --logFile myfile --campusName penn --create --dbDescriptors 'plas-inc:ares9, toxo-inc:ares8'
+Example: ./bulkInstallVdiSchema --logFile myfile --campusName penn --create --dbDescriptors 'plas-inc:ares9, toxo-inc:ares8' --campuses 'n,s' --lifecycles 'feat, prod'
 ";
 }
 
@@ -56,6 +63,8 @@ foreach my $d (@dbDescriptors) {
 
 my $flag = $create? '--create' : '--drop';
 
+print $dryRun? "\nThis IS a dry run\n" : "\nThis is NOT a dry run\n";
+
 if ($drop) {
     print "\nYou are about to UNINSTALL the VDI_DATASETS and VDI_CONTROL schemas on database:\n  $dbDescriptorsStr\nType 'I am not afraid' to proceed: ";
     my $confirm = <STDIN>;
@@ -63,13 +72,14 @@ if ($drop) {
     die "You did not correctly confirm the db instance\n" unless 'I am not afraid' eq $confirm;
 }
 
+my $dry = $dryRun? "DRY RUN -" : "";
 foreach my $d (@dbDescrips) {
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
       my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.$campusName.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
       $cmd = "$cmd >> $logFile";
-      print STDERR "\nRunning cmd: $cmd\n";
-      system($cmd) && print STDERR "Failed: $!\n";
+      print STDERR "\n$dry Running cmd: $cmd\n";
+      if (!$dryRun) { system($cmd) && print STDERR "Failed: $!\n"; }
     }
   }
 }
