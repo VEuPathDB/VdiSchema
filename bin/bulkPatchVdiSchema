@@ -60,11 +60,12 @@ foreach my $dbname (@dbNames) {
     foreach my $campus (@campuses) {
       my $suffix = "${lifecycle}_$campus";
       foreach my $sql (@sqlList) {
-	$sql =~ s/\@SUFFIX\@/$suffix/g;
+        my $newSql = $sql;
+	$newSql =~ s/\@SUFFIX\@/$suffix/g;
 	print STDERR "DB: $dbname SUFFIX: $suffix\n";
-	print STDERR ($forReal? "FOR REAL" : "DRY RUN") . " - SQL: \n$sql\n\n";
+	print STDERR ($forReal? "FOR REAL" : "DRY RUN") . " - SQL: \n$newSql\n\n";
 	if ($forReal) {
-	  $dbh->do($sql);
+	  $dbh->do($newSql);
 	}
       }
     }
