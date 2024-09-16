@@ -6,17 +6,16 @@ use DBI;
 
 $| = 1;
 
-my $DRYRUN = 0;
-
 my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
 my $envStr = '$' . join(", \$", @envVars);
-my ($dbNamesStr, $sqlFile);
+my ($dbNamesStr, $sqlFile, $forReal);
 
 my @lifecycles = ('dev', 'qa', 'beta', 'feat', 'prod');
 my @campuses = ('n', 's');
 
 &GetOptions("dbNames=s" => \$dbNamesStr,
-	    "sqlFile=s" => \$sqlFile);
+	    "sqlFile=s" => \$sqlFile,
+	    "forReal" => \$forReal); # if false, don't really execute the SQL
 
 my @dbNames = split(/,\s*/, $dbNamesStr);
 
@@ -25,11 +24,11 @@ if (scalar @dbNames < 1) {
 
 Iterates through all VDI schemas (either control or datasets) on the specified databases, and applies a db patch found in provided SQL file.
 
-SQL file can include macro \@SUFFIX\@
+SQL file can include macro \@SUFFIX\@ which will be replaced by, eg, QA_N
 
-Assumes all dbHosts are at penn.apidb.org
+SQL file can contain multiple statements ending with ';'.  Each will be executed in order on each database.
 
-Usage: bulkPatchVdiSchema --schemaPrefix [vdi_control | vdi_datasets] --dbNames 'plas-inc, toxo-inc' --sqlFile myFile
+Usage: bulkPatchVdiSchema --schemaPrefix [vdi_control | vdi_datasets] --dbNames 'plas-inc, toxo-inc' --sqlFile myFile [--forReal]
 
 Required environment variables: $envStr
 
@@ -47,7 +46,9 @@ for my $envVar (@envVars) { die "Missing env variable '$envVar'\n" unless $ENV{$
 die "Can't find sql file $sqlFile\n" unless -e $sqlFile;
 
 open my $fh, '<', $sqlFile or die "error opening $sqlFile: $!";
-my $sql = do { local $/; <$fh> };
+my $sqls = do { local $/; <$fh> };
+
+my @sqlList = split(/;\s+/, $sqls);
 
 foreach my $dbname (@dbNames) {
   my $dbh = DBI->connect("dbi:Oracle:$dbname", $ENV{DB_USER}, $ENV{DB_PASS})
@@ -58,17 +59,19 @@ foreach my $dbname (@dbNames) {
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
       my $suffix = "${lifecycle}_$campus";
-      my $newSql = $sql;
-      $newSql =~ s/\@SUFFIX\@/$suffix/g;
-      print STDERR "DB: $dbname SUFFIX: $suffix\n";
-      print STDERR "SQL: $newSql\n";
-      unless ($DRYRUN) {
-	$dbh->do($newSql);
+      foreach my $sql (@sqlList) {
+        my $newSql = $sql;
+	$newSql =~ s/\@SUFFIX\@/$suffix/g;
+	print STDERR "DB: $dbname SUFFIX: $suffix\n";
+	print STDERR ($forReal? "FOR REAL" : "DRY RUN") . " - SQL: \n$newSql\n\n";
+	if ($forReal) {
+	  $dbh->do($newSql);
+	}
       }
     }
   }
   $dbh->disconnect();
 }
 
-my $s = $DRYRUN? "DRYRUN " : "";
+my $s = $forReal? "FOR REAL " : "DRYRUN ";
 print STDERR "\n${s}Done.\n";
