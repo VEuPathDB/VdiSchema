@@ -69,14 +69,14 @@ CREATE TABLE VDI_CONTROL_&1..dataset_install_activity (
 );
 
 CREATE TABLE VDI_CONTROL_&1..dataset_publication (
-  dataset_id  VARCHAR2(32)   PRIMARY KEY NOT NULL
+  dataset_id  VARCHAR2(32)   NOT NULL
 , citation        VARCHAR2(1024) NOT NULL
 , pubmed_id        VARCHAR2(30) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
 CREATE TABLE VDI_CONTROL_&1..dataset_hyperlink (
-  dataset_id  VARCHAR2(32)   PRIMARY KEY NOT NULL
+  dataset_id  VARCHAR2(32)   NOT NULL
 , url        VARCHAR2(200) NOT NULL
 , text        VARCHAR2(300) NOT NULL
 , description        VARCHAR2(4000)
@@ -84,13 +84,13 @@ CREATE TABLE VDI_CONTROL_&1..dataset_hyperlink (
 );
 
 CREATE TABLE VDI_CONTROL_&1..dataset_taxon_id (
-  dataset_id  VARCHAR2(32)   PRIMARY KEY NOT NULL
+  dataset_id  VARCHAR2(32)   NOT NULL
 , taxon_id        number NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
 CREATE TABLE VDI_CONTROL_&1..dataset_contact (
-  dataset_id  VARCHAR2(32)   PRIMARY KEY NOT NULL
+  dataset_id  VARCHAR2(32)   NOT NULL
 , is_primary  NUMBER NOT NULL
 , name        VARCHAR2(300) NOT NULL
 , email        VARCHAR2(4000)
