@@ -22,13 +22,13 @@ my @dbNames = split(/,\s*/, $dbNamesStr);
 if (scalar @dbNames < 1) {
   die "
 
-Iterates through all VDI schemas (either control or datasets) on the specified databases, and applies a db patch found in provided SQL file.
+Iterates through all VDI schemas on the specified databases, and applies a db patch found in provided SQL file.
 
 SQL file can include macro \@SUFFIX\@ which will be replaced by, eg, QA_N
 
 SQL file can contain multiple statements ending with ';'.  Each will be executed in order on each database.
 
-Usage: bulkPatchVdiSchema --schemaPrefix [vdi_control | vdi_datasets] --dbNames 'plas-inc, toxo-inc' --sqlFile myFile [--forReal]
+Usage: bulkPatchVdiSchema --dbNames 'plas-inc, toxo-inc' --sqlFile myFile [--forReal]
 
 Required environment variables: $envStr
 
@@ -37,7 +37,7 @@ export DB_PLATFORM=Oracle export DB_USER=MY-LOGIN export DB_PASS=MY-PASSWORD
 
 Example: ./bulkPatchVdiSchema --dbNames 'plas-inc, toxo-inc' --sqlFile myfile
 
-Full list of inc databases: ameb-inc,cryp-inc,eda-inc,fung-inc,giar-inc,host-inc,micr-inc,piro-inc,plas-inc,toxo-inc,tryp-inc,tvag-inc,vect-inc,eda-inc
+Full list of inc databases: ameb-inc,cryp-inc,eda-inc,fung-inc,giar-inc,host-inc,micr-inc,piro-inc,plas-inc,toxo-inc,tryp-inc,tvag-inc,vect-inc
 ";
 }
 
