@@ -80,6 +80,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset_hyperlink (
 , url        VARCHAR2(200) NOT NULL
 , text        VARCHAR2(300) NOT NULL
 , description        VARCHAR2(4000)
+, is_publication  number
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
