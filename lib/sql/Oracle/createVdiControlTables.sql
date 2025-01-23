@@ -18,6 +18,9 @@ CREATE TABLE VDI_CONTROL_&1..dataset (
 CREATE TABLE VDI_CONTROL_&1..dataset_meta (
   dataset_id  VARCHAR2(32)   PRIMARY KEY NOT NULL
 , name        VARCHAR2(1024) NOT NULL
+, short_name        VARCHAR2(300)
+, short_attribution VARCHAR2(300)
+, category VARCHAR2(100)
 , description VARCHAR2(4000)
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
@@ -65,6 +68,41 @@ CREATE TABLE VDI_CONTROL_&1..dataset_install_activity (
 , PRIMARY KEY (dataset_id, install_type)
 );
 
+CREATE TABLE VDI_CONTROL_&1..dataset_publication (
+  dataset_id  VARCHAR2(32)   NOT NULL
+, citation        VARCHAR2(1024) NOT NULL
+, pubmed_id        VARCHAR2(30) NOT NULL
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
+);
+
+CREATE TABLE VDI_CONTROL_&1..dataset_hyperlink (
+  dataset_id  VARCHAR2(32)   NOT NULL
+, url        VARCHAR2(200) NOT NULL
+, text        VARCHAR2(300) NOT NULL
+, description        VARCHAR2(4000)
+, is_publication  number
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
+);
+
+CREATE TABLE VDI_CONTROL_&1..dataset_taxon_id (
+  dataset_id  VARCHAR2(32)   NOT NULL
+, taxon_id        number NOT NULL
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
+);
+
+CREATE TABLE VDI_CONTROL_&1..dataset_contact (
+  dataset_id  VARCHAR2(32)   NOT NULL
+, is_primary  NUMBER NOT NULL
+, name        VARCHAR2(300) NOT NULL
+, email        VARCHAR2(4000)
+, affiliation  VARCHAR2(4000)
+, city        VARCHAR2(200)
+, state        VARCHAR2(200)
+, country        VARCHAR2(200)
+, address        VARCHAR2(1000)
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
+);
+
 -- convenience view showing datasets visible to a user that are fully installed, and not deleted
 -- application code should use this view to find datasets a user can use
 CREATE VIEW VDI_CONTROL_&1..AvailableUserDatasets AS
@@ -76,6 +114,9 @@ SELECT
     d.is_public,
     m.name,
     m.description,
+    m.short_name,
+    m.short_attribution,
+    m.category,
     p.project_id
 FROM
     VDI_CONTROL_&1..dataset_visibility v,
@@ -118,6 +159,10 @@ GRANT SELECT ON VDI_CONTROL_&1..dataset_install_activity TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_meta            TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_publication     TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_hyperlink       TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_taxon_id        TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_contact         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..AvailableUserDatasets   TO gus_r;
 
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset                 TO vdi_w;
@@ -127,9 +172,13 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_install_activity
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project         TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta            TO vdi_w;
-
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_publication     TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_hyperlink       TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_taxon_id        TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_contact         TO vdi_w;
 
 GRANT REFERENCES ON VDI_CONTROL_&1..dataset TO VDI_DATASETS_&1;
 GRANT CREATE SESSION, CREATE TABLE, CREATE ANY TABLE, CREATE VIEW, CREATE ANY INDEX, CREATE SEQUENCE TO VDI_DATASETS_&1;
 
 exit;
+
