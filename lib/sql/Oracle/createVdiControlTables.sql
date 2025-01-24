@@ -21,7 +21,8 @@ CREATE TABLE VDI_CONTROL_&1..dataset_meta (
 , short_name        VARCHAR2(300)
 , short_attribution VARCHAR2(300)
 , category VARCHAR2(100)
-, description VARCHAR2(4000)
+, summary VARCHAR2(4000)
+, description CLOB
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
