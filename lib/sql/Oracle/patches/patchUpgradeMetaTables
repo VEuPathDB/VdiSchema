@@ -1,3 +1,4 @@
+ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD summary varchar2(4000);
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD category varchar2(100);
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_name varchar2(300);
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_attribution varchar2(300);
