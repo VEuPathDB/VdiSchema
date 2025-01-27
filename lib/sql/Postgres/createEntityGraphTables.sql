@@ -15,7 +15,7 @@ CREATE SEQUENCE VDI_DATASETS_:VAR1.Study_sq;
 GRANT SELECT ON VDI_DATASETS_:VAR1.Study_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_:VAR1.Study_sq TO gus_r;
 
-CREATE INDEX VDI_DATASETS_:VAR1.study_ix_1 ON VDI_DATASETS_:VAR1.study (stable_id, internal_abbrev) TABLESPACE indx;
+CREATE INDEX study_ix_1 ON VDI_DATASETS_:VAR1.study (stable_id, internal_abbrev);
 
 -----------------------------------------------------------
 
@@ -48,8 +48,8 @@ CREATE SEQUENCE VDI_DATASETS_:VAR1.EntityTypeGraph_sq;
 GRANT SELECT ON VDI_DATASETS_:VAR1.EntityTypeGraph_sq TO vdi_w;
 GRANT SELECT ON VDI_DATASETS_:VAR1.EntityTypeGraph_sq TO gus_r;
 
-CREATE INDEX VDI_DATASETS_:VAR1.entitytypegraph_ix_1 ON VDI_DATASETS_:VAR1.entitytypegraph (study_stable_id, stable_id, parent_stable_id) TABLESPACE indx;
-CREATE INDEX VDI_DATASETS_:VAR1.entitytypegraph_ix_2 ON VDI_DATASETS_:VAR1.entitytypegraph (parent_stable_id) TABLESPACE indx;
+CREATE INDEX entitytypegraph_ix_1 ON VDI_DATASETS_:VAR1.entitytypegraph (study_stable_id, stable_id, parent_stable_id);
+CREATE INDEX entitytypegraph_ix_2 ON VDI_DATASETS_:VAR1.entitytypegraph (parent_stable_id);
 
 
-exit;
+

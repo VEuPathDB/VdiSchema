@@ -140,7 +140,7 @@ FROM
     select x.dataset_id, x.user_id, 0 as is_owner
     from (select dataset_id, user_id 
           from VDI_CONTROL_:VAR1.dataset_visibility
-          minus
+          except   -- minus
           select dataset_id, owner as user_id
           from VDI_CONTROL_:VAR1.dataset) x
     ) o
@@ -178,5 +178,5 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_hyperlink     
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_taxon_id        TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_contact         TO vdi_w;
 
-exit;
+
 

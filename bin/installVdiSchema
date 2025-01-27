@@ -24,6 +24,7 @@ my ($dbName, $dbHost, $drop, $create, $lifecycle, $campus, $allowFailures, $dont
 
 my @lifecycle = ('dev', 'qa', 'feat', 'beta', 'prod');
 my $lcStr = join(", ", @lifecycle);
+
 if (($create + $drop != 1) || !( grep( /^$lifecycle$/, @lifecycle )) || ($campus ne 'n' && $campus ne 's')) {
   die "
 
@@ -78,6 +79,8 @@ my @create = qw(
   createUserDatasetTypeTables.sql
   createEntityGraphTables.sql
 );
+
+@create = ('createVdiSchemas.sql', @create) if $dbVendor eq 'Postgres';  # for oracle DBA must do this step
 
 if ($create) {
   for my $sqlFile (@create) {

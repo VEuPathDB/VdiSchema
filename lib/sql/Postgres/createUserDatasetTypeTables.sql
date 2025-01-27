@@ -4,7 +4,7 @@ gene_SOURCE_ID                             VARCHAR(100),
 FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
-CREATE unique INDEX VDI_DATASETS_:VAR1.UD_GENEID_idx1 ON VDI_DATASETS_:VAR1.UD_geneid (user_dataset_id, gene_source_id) tablespace indx;
+CREATE unique INDEX UD_GENEID_idx1 ON VDI_DATASETS_:VAR1.UD_geneid (user_dataset_id, gene_source_id);
 
 GRANT insert, select, update, delete ON VDI_DATASETS_:VAR1.UD_GeneId TO vdi_w;
 GRANT select ON VDI_DATASETS_:VAR1.UD_GeneId TO gus_r;
@@ -20,10 +20,10 @@ create table VDI_DATASETS_:VAR1.UD_ProfileSet (
  primary key (profile_set_id)
 );
 
-create index VDI_DATASETS_:VAR1.pset_idx1
+create index pset_idx1
   on VDI_DATASETS_:VAR1.UD_ProfileSet
      (profile_set_id, user_dataset_id, name, unit)
-  tablespace indx;
+  ;
 
 create sequence VDI_DATASETS_:VAR1.UD_profileset_sq;
 
@@ -48,11 +48,11 @@ FOREIGN KEY (profile_set_id) REFERENCES VDI_DATASETS_:VAR1.UD_profileset,
 PRIMARY KEY (protocol_app_node_id)
 );
 
-CREATE INDEX VDI_DATASETS_:VAR1.UD_PAN_idx1 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (type_id) tablespace indx;
-CREATE INDEX VDI_DATASETS_:VAR1.UD_PAN_idx2 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (profile_set_id) tablespace indx;
-CREATE INDEX VDI_DATASETS_:VAR1.UD_PAN_idx3 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (subtype_id) tablespace indx;
-CREATE INDEX VDI_DATASETS_:VAR1.UD_PAN_idx4 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (taxon_id, protocol_app_node_id) tablespace indx;
-CREATE INDEX VDI_DATASETS_:VAR1.ud_pan_idx5 on VDI_DATASETS_:VAR1.ud_ProtocolAppNode (protocol_app_node_id, profile_set_id, name);
+CREATE INDEX UD_PAN_idx1 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (type_id) ;
+CREATE INDEX UD_PAN_idx2 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (profile_set_id) ;
+CREATE INDEX UD_PAN_idx3 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (subtype_id) ;
+CREATE INDEX UD_PAN_idx4 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (taxon_id, protocol_app_node_id) ;
+CREATE INDEX ud_pan_idx5 on VDI_DATASETS_:VAR1.ud_ProtocolAppNode (protocol_app_node_id, profile_set_id, name);
 
 
 create sequence VDI_DATASETS_:VAR1.UD_ProtocolAppNode_sq;
@@ -77,9 +77,9 @@ create table VDI_DATASETS_:VAR1.UD_NaFeatureExpression (
   PRIMARY KEY (na_feat_expression_id)
 );
 
-CREATE INDEX VDI_DATASETS_:VAR1.UD_NFE_idx1 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (protocol_app_node_id, na_feature_id, value) tablespace indx;
-CREATE INDEX VDI_DATASETS_:VAR1.UD_NFE_idx2 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (na_feature_id) tablespace indx;
-CREATE unique INDEX VDI_DATASETS_:VAR1.UD_NFE_idx3 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (na_feature_id, protocol_app_node_id, value) tablespace indx;
+CREATE INDEX UD_NFE_idx1 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (protocol_app_node_id, na_feature_id, value) ;
+CREATE INDEX UD_NFE_idx2 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (na_feature_id) ;
+CREATE unique INDEX UD_NFE_idx3 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (na_feature_id, protocol_app_node_id, value) ;
 
 create sequence VDI_DATASETS_:VAR1.UD_NaFeatureExpression_sq;
 
@@ -149,4 +149,4 @@ create sequence VDI_DATASETS_:VAR1.UD_Sample_sq;
 GRANT insert, select, update, delete ON VDI_DATASETS_:VAR1.UD_Sample TO vdi_w;
 GRANT select ON VDI_DATASETS_:VAR1.UD_Sample TO gus_r;
 GRANT select ON VDI_DATASETS_:VAR1.UD_Sample_sq TO vdi_w;
-exit;
+
