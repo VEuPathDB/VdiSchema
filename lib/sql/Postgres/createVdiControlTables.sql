@@ -85,9 +85,9 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_hyperlink (
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset (dataset_id)
 );
 
-CREATE TABLE VDI_CONTROL_:VAR1.dataset_taxon_id (
+CREATE TABLE VDI_CONTROL_:VAR1.dataset_organism (
   dataset_id  VARCHAR(32)   NOT NULL
-, taxon_id        numeric(30) NOT NULL
+, organismNameForFiles  varchar(200) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset (dataset_id)
 );
 
@@ -162,7 +162,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_meta            TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_publication     TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_hyperlink       TO gus_r;
-GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_taxon_id        TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_organism        TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_contact         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.AvailableUserDatasets   TO gus_r;
 
@@ -175,7 +175,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_project       
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_meta            TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_publication     TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_hyperlink       TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_taxon_id        TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_organism        TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_contact         TO vdi_w;
 
 

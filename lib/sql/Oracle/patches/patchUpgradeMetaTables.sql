@@ -22,9 +22,9 @@ CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_hyperlink (
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
 );
 
-CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_taxon_id (
+CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_organism (
   dataset_id  VARCHAR2(32)   NOT NULL
-, taxon_id        number NOT NULL
+, organismNameForFiles varchar(200) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
 );
 
@@ -93,11 +93,11 @@ FROM
 
 GRANT SELECT ON VDI_CONTROL_@SUFFIX@.dataset_publication     TO gus_r;
 GRANT SELECT ON VDI_CONTROL_@SUFFIX@.dataset_hyperlink       TO gus_r;
-GRANT SELECT ON VDI_CONTROL_@SUFFIX@.dataset_taxon_id        TO gus_r;
+GRANT SELECT ON VDI_CONTROL_@SUFFIX@.dataset_organism        TO gus_r;
 GRANT SELECT ON VDI_CONTROL_@SUFFIX@.dataset_contact         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_@SUFFIX@.AvailableUserDatasets   TO gus_r;
 
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_@SUFFIX@.dataset_publication     TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_@SUFFIX@.dataset_hyperlink       TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_@SUFFIX@.dataset_taxon_id        TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_@SUFFIX@.dataset_organism        TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_@SUFFIX@.dataset_contact         TO vdi_w;
