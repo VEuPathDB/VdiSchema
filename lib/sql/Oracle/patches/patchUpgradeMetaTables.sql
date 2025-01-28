@@ -1,3 +1,6 @@
+ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset_meta RENAME COLUMN description TO old_description;
+ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD description clob;
+UPDATE VDI_CONTROL_@SUFFIX@.dataset_meta SET description = old_description;
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD summary varchar2(4000);
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD category varchar2(100);
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_name varchar2(300);
@@ -6,7 +9,7 @@ ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_attribution varchar2(30
 CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_publication (
   dataset_id  VARCHAR2(32)   NOT NULL
 , citation        VARCHAR2(1024) NOT NULL
-, pubmed_id        VARCHAR2(30) NOT NULL
+, pubmed_id        VARCHAR2(30) 
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
 );
 
