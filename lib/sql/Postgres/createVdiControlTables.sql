@@ -87,7 +87,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_hyperlink (
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_organism (
   dataset_id  VARCHAR(32)   NOT NULL
-, organismNameForFiles  varchar(200) NOT NULL
+, organism_name_for_files  varchar(200) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset (dataset_id)
 );
 

@@ -24,7 +24,7 @@ CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_hyperlink (
 
 CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_organism (
   dataset_id  VARCHAR2(32)   NOT NULL
-, organismNameForFiles varchar(200) NOT NULL
+, organism_name_for_files varchar(200) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
 );
 
