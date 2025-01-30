@@ -72,6 +72,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset_install_activity (
 CREATE TABLE VDI_CONTROL_&1..dataset_publication (
   dataset_id  VARCHAR2(32)   NOT NULL
 , pubmed_id        VARCHAR2(30) NOT NULL
+, citation        VARCHAR2(2000) 
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 

@@ -9,6 +9,7 @@ ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_attribution varchar2(30
 CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_publication (
   dataset_id  VARCHAR2(32)   NOT NULL
 , pubmed_id        VARCHAR2(30) NOT NULL
+, citation        VARCHAR2(2000) 
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
 );
 
