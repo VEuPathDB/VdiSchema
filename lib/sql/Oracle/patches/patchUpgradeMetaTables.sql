@@ -8,8 +8,7 @@ ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_attribution varchar2(30
 
 CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_publication (
   dataset_id  VARCHAR2(32)   NOT NULL
-, citation        VARCHAR2(1024) NOT NULL
-, pubmed_id        VARCHAR2(30) 
+, pubmed_id        VARCHAR2(30) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
 );
 
@@ -24,7 +23,7 @@ CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_hyperlink (
 
 CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_organism (
   dataset_id  VARCHAR2(32)   NOT NULL
-, organism_name_for_files varchar(200) NOT NULL
+, organism_abbrev varchar(200) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
 );
 
