@@ -69,6 +69,14 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_install_activity (
 , PRIMARY KEY (dataset_id, install_type)
 );
 
+CREATE TABLE VDI_CONTROL_:VAR1.dataset_dependency (
+  dataset_id  VARCHAR2(32)   NOT NULL
+, identifier        VARCHAR2(50) NOT NULL
+, display_name VARCHAR2(100) 
+, version VARCHAR2(50) 
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset (dataset_id)
+);
+
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
   dataset_id  VARCHAR(32)   NOT NULL
 , pubmed_id        VARCHAR(30) NOT NULL
@@ -157,6 +165,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset                 TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.sync_control            TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_install_message TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_install_activity TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_dependency      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_visibility      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_meta            TO gus_r;
@@ -170,6 +179,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset               
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.sync_control            TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_install_message TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_install_activity TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_dependency       TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_visibility      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_project         TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_meta            TO vdi_w;
