@@ -1,0 +1,31 @@
+<project name="ApidbSchema" basedir=".">
+
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooo  Dependencies  oooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+  <import file="${projectsDir}/GUS/build.xml" />
+  <import file="${projectsDir}/SchemaInstallUtils/build.xml" />
+
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+  <target name="VdiSchema-Installation" depends="GUS/DBAdmin-Installation,
+                                                   SchemaInstallUtils-Installation,
+                                                   VdiSchema/Main-Installation">
+    <ant target="defaultProjectInstall">
+      <property name="project" value="VdiSchema" />
+    </ant>
+  </target>
+
+  <!-- ooooooooooooooooooooooo  Install Components  ooooooooooooooooooooooo -->
+
+  <target name="VdiSchema/Main-Installation">
+    <ant target="defaultComponentInstall">
+      <property name="project" value="VdiSchema" />
+      <property name="component" value="Main" />
+    </ant>
+  </target>
+
+</project>
