@@ -11,9 +11,8 @@
   <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="VdiSchema-Installation" depends="GUS/DBAdmin-Installation,
-                                                   SchemaInstallUtils-Installation,
-                                                   VdiSchema/Main-Installation">
+  <target name="VdiSchema-Installation" depends="SchemaInstallUtils-Installation,
+                                                 VdiSchema/Main-Installation">
     <ant target="defaultProjectInstall">
       <property name="project" value="VdiSchema" />
     </ant>
