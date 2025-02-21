@@ -90,7 +90,7 @@ if ($create) {
     print STDOUT "==============================================================\n";
     my @sqlplusParamValues = ($schemaSuffix);
     my $filePath = "$FindBin::Bin/../lib/sql/$dbVendor/$sqlFile";
-    runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues, "VDI_W");
+    runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, "VDI_W", @sqlplusParamValues);
   }
 }
 else {
