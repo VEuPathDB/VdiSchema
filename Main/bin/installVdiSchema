@@ -80,7 +80,8 @@ my @create = qw(
   createEntityGraphTables.sql
 );
 
-@create = ('createVdiSchemas.sql', @create) if $dbVendor eq 'Postgres';  # for oracle DBA must do this step
+# let's skip this until we figure out the permissions and deployment (i.e., all databases are owned by gus_w)
+# @create = ('createVdiSchemas.sql', @create) if $dbVendor eq 'Postgres';  # for oracle DBA must do this step
 
 if ($create) {
   for my $sqlFile (@create) {z
@@ -89,7 +90,7 @@ if ($create) {
      print STDOUT "==============================================================\n";
      my @sqlplusParamValues = ($schemaSuffix);
      my $filePath = "$FindBin::Bin/../lib/sql/$dbVendor/$sqlFile";
-     runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
+     runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues, "VDI_W");
   }
 } else {
   my @schemas = ("VDI_DATASETS_$schemaSuffix", "VDI_CONTROL_$schemaSuffix");
