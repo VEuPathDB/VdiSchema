@@ -1,69 +1,69 @@
-create table VDI_DATASETS_:VAR1.UD_GeneId (
-USER_DATASET_ID          VARCHAR(32),
-gene_SOURCE_ID                             VARCHAR(100),
-FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
+CREATE TABLE VDI_DATASETS_:VAR1.UD_GeneId (
+  user_dataset_id VARCHAR(32),
+  gene_source_id  VARCHAR(100),
+  FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
-CREATE unique INDEX UD_GENEID_idx1 ON VDI_DATASETS_:VAR1.UD_geneid (user_dataset_id, gene_source_id);
+CREATE UNIQUE INDEX UD_GENEID_idx1 ON VDI_DATASETS_:VAR1.UD_geneid(user_dataset_id, gene_source_id);
 
-GRANT insert, select, update, delete ON VDI_DATASETS_:VAR1.UD_GeneId TO vdi_w;
-GRANT select ON VDI_DATASETS_:VAR1.UD_GeneId TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.UD_GeneId TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_GeneId TO gus_r;
 
 ----------------------------------------------------------------------------
 
-create table VDI_DATASETS_:VAR1.UD_ProfileSet (
- profile_set_id  numeric(20),
- user_dataset_id varchar(32),
- name            varchar(200) not null,
- unit            varchar(4),
- foreign key (user_dataset_id) references VDI_CONTROL_:VAR1.DATASET(dataset_id),
- primary key (profile_set_id)
+CREATE TABLE VDI_DATASETS_:VAR1.UD_ProfileSet (
+  profile_set_id  NUMERIC(20),
+  user_dataset_id VARCHAR(32),
+  name            VARCHAR(200) NOT NULL,
+  unit            VARCHAR(4),
+  FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_:VAR1.DATASET(dataset_id),
+  PRIMARY KEY (profile_set_id)
 );
 
-create index pset_idx1
-  on VDI_DATASETS_:VAR1.UD_ProfileSet
-     (profile_set_id, user_dataset_id, name, unit)
-  ;
+CREATE INDEX pset_idx1
+  ON VDI_DATASETS_:VAR1.UD_ProfileSet
+    (profile_set_id, user_dataset_id, name, unit)
+;
 
-create sequence VDI_DATASETS_:VAR1.UD_profileset_sq;
+CREATE SEQUENCE VDI_DATASETS_:VAR1.UD_profileset_sq;
 
-grant insert, select, update, delete on VDI_DATASETS_:VAR1.UD_ProfileSet to vdi_w;
-grant select on VDI_DATASETS_:VAR1.UD_ProfileSet to gus_r;
-grant select on VDI_DATASETS_:VAR1.UD_profileSet_sq to vdi_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.UD_ProfileSet TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_ProfileSet TO gus_r;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_profileSet_sq TO vdi_w;
 
 ----------------------------------------------------------------------------
-create table VDI_DATASETS_:VAR1.UD_ProtocolAppNode (
-PROTOCOL_APP_NODE_ID                  NUMERIC(10) not null,
-TYPE_ID                               NUMERIC(10),
-NAME                                  VARCHAR(200) not null,
-DESCRIPTION                           VARCHAR(1000),
-URI                                   VARCHAR(300),
-profile_set_id                        NUMERIC(20),
-SOURCE_ID                             VARCHAR(100),
-SUBTYPE_ID                            NUMERIC(10),
-TAXON_ID                              NUMERIC(10),
-NODE_ORDER_NUM                        NUMERIC(10),
-ISA_TYPE                              VARCHAR(50),
-FOREIGN KEY (profile_set_id) REFERENCES VDI_DATASETS_:VAR1.UD_profileset,
-PRIMARY KEY (protocol_app_node_id)
+CREATE TABLE VDI_DATASETS_:VAR1.UD_ProtocolAppNode (
+  protocol_app_node_id NUMERIC(10)  NOT NULL,
+  type_id              NUMERIC(10),
+  name                 VARCHAR(200) NOT NULL,
+  description          VARCHAR(1000),
+  URI                  VARCHAR(300),
+  profile_set_id       NUMERIC(20),
+  source_id            VARCHAR(100),
+  subtype_id           NUMERIC(10),
+  taxon_id             NUMERIC(10),
+  node_order_num       NUMERIC(10),
+  isa_type             VARCHAR(50),
+  FOREIGN KEY (profile_set_id) REFERENCES VDI_DATASETS_:VAR1.UD_profileset,
+  PRIMARY KEY (protocol_app_node_id)
 );
 
-CREATE INDEX UD_PAN_idx1 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (type_id) ;
-CREATE INDEX UD_PAN_idx2 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (profile_set_id) ;
-CREATE INDEX UD_PAN_idx3 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (subtype_id) ;
-CREATE INDEX UD_PAN_idx4 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE (taxon_id, protocol_app_node_id) ;
-CREATE INDEX ud_pan_idx5 on VDI_DATASETS_:VAR1.ud_ProtocolAppNode (protocol_app_node_id, profile_set_id, name);
+CREATE INDEX UD_PAN_idx1 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE(type_id);
+CREATE INDEX UD_PAN_idx2 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE(profile_set_id);
+CREATE INDEX UD_PAN_idx3 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE(subtype_id);
+CREATE INDEX UD_PAN_idx4 ON VDI_DATASETS_:VAR1.UD_PROTOCOLAPPNODE(taxon_id, protocol_app_node_id);
+CREATE INDEX ud_pan_idx5 ON VDI_DATASETS_:VAR1.ud_ProtocolAppNode(protocol_app_node_id, profile_set_id, name);
 
 
-create sequence VDI_DATASETS_:VAR1.UD_ProtocolAppNode_sq;
+CREATE SEQUENCE VDI_DATASETS_:VAR1.UD_ProtocolAppNode_sq;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_:VAR1.UD_ProtocolAppNode TO vdi_w;
-GRANT select ON VDI_DATASETS_:VAR1.UD_ProtocolAppNode TO gus_r;
-GRANT select ON VDI_DATASETS_:VAR1.UD_ProtocolAppNode_sq TO vdi_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.UD_ProtocolAppNode TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_ProtocolAppNode TO gus_r;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_ProtocolAppNode_sq TO vdi_w;
 
 -----------------------------------------------------------------------------------------------------
 
-create table VDI_DATASETS_:VAR1.UD_NaFeatureExpression (
+CREATE TABLE VDI_DATASETS_:VAR1.UD_NaFeatureExpression (
   na_feat_expression_id NUMERIC(12) NOT NULL,
   protocol_app_node_id  NUMERIC(10) NOT NULL,
   na_feature_id         NUMERIC(10) NOT NULL,
@@ -77,15 +77,15 @@ create table VDI_DATASETS_:VAR1.UD_NaFeatureExpression (
   PRIMARY KEY (na_feat_expression_id)
 );
 
-CREATE INDEX UD_NFE_idx1 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (protocol_app_node_id, na_feature_id, value) ;
-CREATE INDEX UD_NFE_idx2 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (na_feature_id) ;
-CREATE unique INDEX UD_NFE_idx3 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression (na_feature_id, protocol_app_node_id, value) ;
+CREATE INDEX UD_NFE_idx1 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression(protocol_app_node_id, na_feature_id, value);
+CREATE INDEX UD_NFE_idx2 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression(na_feature_id);
+CREATE UNIQUE INDEX UD_NFE_idx3 ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression(na_feature_id, protocol_app_node_id, value);
 
-create sequence VDI_DATASETS_:VAR1.UD_NaFeatureExpression_sq;
+CREATE SEQUENCE VDI_DATASETS_:VAR1.UD_NaFeatureExpression_sq;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression TO vdi_w;
-GRANT select ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression TO gus_r;
-GRANT select ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression_sq TO vdi_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression TO gus_r;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_NaFeatureExpression_sq TO vdi_w;
 
 --------------------------------------------------------------------------------
 CREATE TABLE VDI_DATASETS_:VAR1.ud_NaFeatureDiffResult (
@@ -123,30 +123,31 @@ GRANT SELECT ON VDI_DATASETS_:VAR1.ud_NaFeatureDiffResult_sq TO vdi_w;
 -- WDK also has access to display values from IRODS: name, summary, and description
 -- These are editable by the user, so there is no consistent way to keep them here
 
-create table VDI_DATASETS_:VAR1.UD_Presenter (
-  user_dataset_id varchar(32) not null,
-  property_name varchar(200) not null,
-  property_value varchar(200) not null,
-  foreign key (user_dataset_id) references VDI_CONTROL_:VAR1.DATASET(dataset_id),
-  unique(user_dataset_id, property_name)
+CREATE TABLE VDI_DATASETS_:VAR1.UD_Presenter (
+  user_dataset_id VARCHAR(32)  NOT NULL,
+  property_name   VARCHAR(200) NOT NULL,
+  property_value  VARCHAR(200) NOT NULL,
+  FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_:VAR1.DATASET(dataset_id),
+  UNIQUE (user_dataset_id, property_name)
 );
 
-grant insert, select, update, delete on VDI_DATASETS_:VAR1.UD_Presenter to vdi_w;
-grant select on VDI_DATASETS_:VAR1.UD_Presenter to gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.UD_Presenter TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_Presenter TO gus_r;
 
 
-create table VDI_DATASETS_:VAR1.UD_Sample (
-user_dataset_id                       VARCHAR(32) not null,
-sample_id                             NUMERIC(10) not null,
-name                                  VARCHAR(200) not null,
-display_name                                  VARCHAR(200),
-FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_:VAR1.DATASET(dataset_id),
-PRIMARY KEY (sample_id),
-UNIQUE (name)
+CREATE TABLE VDI_DATASETS_:VAR1.UD_Sample (
+  user_dataset_id VARCHAR(32)  NOT NULL,
+  sample_id       NUMERIC(10)  NOT NULL,
+  name            VARCHAR(200) NOT NULL,
+  display_name    VARCHAR(200),
+  FOREIGN KEY (user_dataset_id) REFERENCES VDI_CONTROL_:VAR1.DATASET(dataset_id),
+  PRIMARY KEY (sample_id),
+  UNIQUE (name)
 );
-create sequence VDI_DATASETS_:VAR1.UD_Sample_sq;
 
-GRANT insert, select, update, delete ON VDI_DATASETS_:VAR1.UD_Sample TO vdi_w;
-GRANT select ON VDI_DATASETS_:VAR1.UD_Sample TO gus_r;
-GRANT select ON VDI_DATASETS_:VAR1.UD_Sample_sq TO vdi_w;
+CREATE SEQUENCE VDI_DATASETS_:VAR1.UD_Sample_sq;
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.UD_Sample TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_Sample TO gus_r;
+GRANT SELECT ON VDI_DATASETS_:VAR1.UD_Sample_sq TO vdi_w;
 

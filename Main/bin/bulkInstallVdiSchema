@@ -11,13 +11,13 @@ my $envStr = '$' . join(", \$", @envVars);
 my ($dbDescriptorsStr, $campusName, $drop, $create, $logFile, $dryRun, $campusesStr, $lifeCyclesStr);
 
 &GetOptions("logFile=s" => \$logFile,
-	    "dbCampusName=s" => \$campusName,
-	    "create!" => \$create,
-	    "drop!" => \$drop,
-	    "dryRun!" => \$dryRun,
-	    "dbDescriptors=s" => \$dbDescriptorsStr,
-            "campuses=s" => \$campusesStr,
-            "lifecycles=s" => \$lifeCyclesStr);
+  "dbCampusName=s"      => \$campusName,
+  "create!"             => \$create,
+  "drop!"               => \$drop,
+  "dryRun!"             => \$dryRun,
+  "dbDescriptors=s"     => \$dbDescriptorsStr,
+  "campuses=s"          => \$campusesStr,
+  "lifecycles=s"        => \$lifeCyclesStr);
 
 my @dbDescriptors = split(/,\S*/, $dbDescriptorsStr);
 my @campuses = split(/,\S*/, $campusesStr);
@@ -53,33 +53,33 @@ Example: ./bulkInstallVdiSchema --logFile myfile --campusName penn --create --db
 ";
 }
 
-for my $envVar (@envVars) { die "Missing env variable '$envVar'\n" unless $ENV{$envVar}; }
+for my $envVar (@envVars) {die "Missing env variable '$envVar'\n" unless $ENV{$envVar};}
 
 my @dbDescrips;
 foreach my $d (@dbDescriptors) {
   $d =~ /(.+):(\w+)/ || die "descriptor '$d' is not in form 'plas-inc:ares8'\n";
-  push(@dbDescrips, {name=>$1, host=>$2});
+  push(@dbDescrips, { name => $1, host => $2 });
 }
 
-my $flag = $create? '--create' : '--drop';
+my $flag = $create ? '--create' : '--drop';
 
-print $dryRun? "\nThis IS a dry run\n" : "\nThis is NOT a dry run\n";
+print $dryRun ? "\nThis IS a dry run\n" : "\nThis is NOT a dry run\n";
 
 if ($drop) {
-    print "\nYou are about to UNINSTALL the VDI_DATASETS and VDI_CONTROL schemas on database:\n  $dbDescriptorsStr\nType 'I am not afraid' to proceed: ";
-    my $confirm = <STDIN>;
-    chomp $confirm;
-    die "You did not correctly confirm the db instance\n" unless 'I am not afraid' eq $confirm;
+  print "\nYou are about to UNINSTALL the VDI_DATASETS and VDI_CONTROL schemas on database:\n  $dbDescriptorsStr\nType 'I am not afraid' to proceed: ";
+  my $confirm = <STDIN>;
+  chomp $confirm;
+  die "You did not correctly confirm the db instance\n" unless 'I am not afraid' eq $confirm;
 }
 
-my $dry = $dryRun? "DRY RUN -" : "";
+my $dry = $dryRun ? "DRY RUN -" : "";
 foreach my $d (@dbDescrips) {
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
       my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.$campusName.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
       $cmd = "$cmd >> $logFile";
       print STDERR "\n$dry Running cmd: $cmd\n";
-      if (!$dryRun) { system($cmd) && print STDERR "Failed: $!\n"; }
+      if (!$dryRun) {system($cmd) && print STDERR "Failed: $!\n";}
     }
   }
 }

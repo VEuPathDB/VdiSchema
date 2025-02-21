@@ -4,7 +4,7 @@ use strict;
 use FindBin;
 use lib "$FindBin::Bin/../lib/perl";
 use Getopt::Long;
-use SchemaInstallUtils::Main::Utils qw( runSql dropSchemaSetTables dropSchemaSetPostgres getDbh );
+use SchemaInstallUtils::Main::Utils qw(runSql dropSchemaSetTables dropSchemaSetPostgres getDbh);
 use DBI;
 
 $| = 1; # flush each line on output 
@@ -14,18 +14,18 @@ my $envStr = '$' . join(", \$", @envVars);
 my ($dbName, $dbHost, $drop, $create, $lifecycle, $campus, $allowFailures, $dontAsk);
 
 &GetOptions("dbName=s" => \$dbName,
-	    "dbHost=s" => \$dbHost,
-	    "allowFailures!" => \$allowFailures,
-	    "create!" => \$create,
-	    "drop!" => \$drop,
-	    "lifecycle=s" => \$lifecycle,
-	    "campus=s" => \$campus,
-            "dontAsk!" => \$dontAsk);
+  "dbHost=s"           => \$dbHost,
+  "allowFailures!"     => \$allowFailures,
+  "create!"            => \$create,
+  "drop!"              => \$drop,
+  "lifecycle=s"        => \$lifecycle,
+  "campus=s"           => \$campus,
+  "dontAsk!"           => \$dontAsk);
 
 my @lifecycle = ('dev', 'qa', 'feat', 'beta', 'prod');
 my $lcStr = join(", ", @lifecycle);
 
-if (($create + $drop != 1) || !( grep( /^$lifecycle$/, @lifecycle )) || ($campus ne 'n' && $campus ne 's')) {
+if (($create + $drop != 1) || !(grep(/^$lifecycle$/, @lifecycle)) || ($campus ne 'n' && $campus ne 's')) {
   die "
 
 Install the VDI control and dataset schemas, tables, etc, or uninstall them
@@ -57,7 +57,7 @@ Example: ./installVdiSchema --dbName rm8711 --dbHost ares10.penn.apidb.org --cre
 ";
 }
 
-for my $envVar (@envVars) { die "Missing env variable '$envVar'\n" unless $ENV{$envVar}; }
+for my $envVar (@envVars) {die "Missing env variable '$envVar'\n" unless $ENV{$envVar};}
 
 my $login = $ENV{DB_USER};
 my $password = $ENV{DB_PASS};
@@ -68,10 +68,10 @@ my $dbh = getDbh($dbName, $dbHost, $dbVendor, $login, $password);
 
 my $schemaSuffix = uc("${lifecycle}_${campus}");
 if ($drop && !$dontAsk) {
-    print "\nYou are about to UNINSTALL the VDI_DATASETS_$schemaSuffix and VDI_CONTROL_$schemaSuffix schemas on database:\n  $dbName\nType the name of the database to confirm: ";
-    my $confirm = <STDIN>;
-    chomp $confirm;
-    die "You did not correctly confirm the db instance\n" unless $dbName eq $confirm;
+  print "\nYou are about to UNINSTALL the VDI_DATASETS_$schemaSuffix and VDI_CONTROL_$schemaSuffix schemas on database:\n  $dbName\nType the name of the database to confirm: ";
+  my $confirm = <STDIN>;
+  chomp $confirm;
+  die "You did not correctly confirm the db instance\n" unless $dbName eq $confirm;
 }
 
 my @create = qw(
@@ -84,21 +84,23 @@ my @create = qw(
 # @create = ('createVdiSchemas.sql', @create) if $dbVendor eq 'Postgres';  # for oracle DBA must do this step
 
 if ($create) {
-  for my $sqlFile (@create) {z
-     print STDOUT "\n==============================================================\n";
-     print STDOUT "running $sqlFile for $schemaSuffix\n";
-     print STDOUT "==============================================================\n";
-     my @sqlplusParamValues = ($schemaSuffix);
-     my $filePath = "$FindBin::Bin/../lib/sql/$dbVendor/$sqlFile";
-     runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues, "VDI_W");
+  for my $sqlFile (@create) {
+    print STDOUT "\n==============================================================\n";
+    print STDOUT "running $sqlFile for $schemaSuffix\n";
+    print STDOUT "==============================================================\n";
+    my @sqlplusParamValues = ($schemaSuffix);
+    my $filePath = "$FindBin::Bin/../lib/sql/$dbVendor/$sqlFile";
+    runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues, "VDI_W");
   }
-} else {
+}
+else {
   my @schemas = ("VDI_DATASETS_$schemaSuffix", "VDI_CONTROL_$schemaSuffix");
   if ($dbVendor eq 'Oracle') {
     my $schemaSetStr = join ', ', map "'$_'", @schemas;
     my $count = dropSchemaSetTables($dbh, $schemaSetStr);
     print STDOUT "Dropped $count objects\n";
-  } else {
+  }
+  else {
     my $count = dropSchemaSetPostgres($dbh, @schemas);
     print STDOUT "Dropped $count schemas\n";
   }
