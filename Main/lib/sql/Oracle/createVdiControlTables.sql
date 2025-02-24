@@ -123,6 +123,7 @@ SELECT
     d.is_public,
     m.name,
     m.description,
+    m.summary,
     m.short_name,
     m.short_attribution,
     m.category,

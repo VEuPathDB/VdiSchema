@@ -122,6 +122,7 @@ SELECT v.dataset_id AS user_dataset_id
   , d.is_public
   , m.name
   , m.description
+  , m.summary
   , m.short_name
   , m.short_attribution
   , m.category

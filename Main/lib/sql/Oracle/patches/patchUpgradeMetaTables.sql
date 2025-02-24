@@ -6,6 +6,14 @@ ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD category varchar2(100);
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_name varchar2(300);
 ALTER TABLE  VDI_CONTROL_@SUFFIX@.dataset_meta ADD short_attribution varchar2(300);
 
+CREATE TABLE VDI_CONTROL_&1..dataset_dependency (
+  dataset_id  VARCHAR2(32)   NOT NULL
+, identifier        VARCHAR2(50) NOT NULL
+, display_name VARCHAR2(100) 
+, version VARCHAR2(50) 
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
+);
+
 CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_publication (
   dataset_id  VARCHAR2(32)   NOT NULL
 , pubmed_id        VARCHAR2(30) NOT NULL
@@ -54,6 +62,7 @@ SELECT
     d.is_public,
     m.name,
     m.description,
+    m.summary,
     m.short_name,
     m.short_attribution,
     m.category,
