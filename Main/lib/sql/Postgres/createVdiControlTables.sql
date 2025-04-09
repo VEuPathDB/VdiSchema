@@ -81,6 +81,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
   dataset_id VARCHAR(32) NOT NULL,
   pubmed_id  VARCHAR(30) NOT NULL,
   citation   VARCHAR(2000),
+  is_primary    NUMBER       DEFAULT 0   NOT NULL,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
