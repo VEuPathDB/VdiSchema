@@ -130,6 +130,8 @@ SELECT v.dataset_id AS user_dataset_id
   , o.is_owner
   , d.type_name AS type
   , d.is_public
+  , m.accessibility
+  , m.creation_date
   , m.name
   , m.description
   , m.summary

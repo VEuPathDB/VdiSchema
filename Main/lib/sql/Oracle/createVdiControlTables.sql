@@ -137,6 +137,7 @@ SELECT
     d.type_name as type,
     d.is_public,
     d.accessibility,
+    d.creation_date,
     m.name,
     m.description,
     m.summary,
