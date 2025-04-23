@@ -152,7 +152,7 @@ FROM VDI_CONTROL_:VAR1.dataset_visibility v
          AND status = 'complete'
      ) i
    , (
-       SELECT dataset_id, owner AS user_id, 1 AS is_owner, d.accessibility
+       SELECT dataset_id, owner AS user_id, 1 AS is_owner, accessibility
        FROM VDI_CONTROL_:VAR1.dataset
        UNION
        SELECT x.dataset_id, x.user_id, 0 AS is_owner, 'private' as accessibility

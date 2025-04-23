@@ -156,7 +156,7 @@ FROM
      WHERE install_type = 'data'
      AND status = 'complete'
     ) i,
-    (select dataset_id, owner as user_id, 1 as is_owner, d.accessibility
+    (select dataset_id, owner as user_id, 1 as is_owner, accessibility
     from VDI_CONTROL_&1..dataset
     union 
     select x.dataset_id, x.user_id, 0 as is_owner, 'private' as accessibility
