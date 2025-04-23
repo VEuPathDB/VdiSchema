@@ -1,9 +1,4 @@
--- This file is parameterized by a LIFECYCLE_CAMPUS suffix (eg qa_n) to append to 'VDI_CONTROL_' in order to form the target VDI control schema.  The macro &1. is filled in with that value.
-
--- In Oracle, that schema must be first created by DBA
---   CREATE USER &1.
---   IDENTIFIED BY "<password>"
---   QUOTA UNLIMITED ON users;
+-- This file is parameterized by a LIFECYCLE_CAMPUS suffix (eg qa_n) to append to 'VDI_CONTROL_' in order to form the target VDI control schema.  The macro :VAR1. is filled in with that value.
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset (
   dataset_id   VARCHAR(32) PRIMARY KEY NOT NULL,
@@ -12,6 +7,9 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset (
   type_version VARCHAR(64)             NOT NULL,
   is_deleted   NUMERIC(1) DEFAULT 0    NOT NULL,
   is_public    NUMERIC(1) DEFAULT 0    NOT NULL
+, accessibility VARCHAR(30)            NOT NULL
+, days_for_approval NUMERIC(20)                  
+, creation_date DATE                   NOT NULL            
 );
 
 
@@ -24,6 +22,17 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_meta (
   summary           VARCHAR(4000),
   description       TEXT,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
+);
+
+CREATE TABLE VDI_CONTROL_:VAR1dataset_characteristics (
+  dataset_id      VARCHAR(32)   PRIMARY KEY NOT NULL
+, study_design    VARCHAR(30)   
+, disease         VARCHAR(30)
+, sample_type     VARCHAR(30)
+, country         VARCHAR(40)
+, years           VARCHAR(400)
+, ages            VARCHAR(30)
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset (dataset_id)
 );
 
 
@@ -174,6 +183,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_dependency TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_visibility TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_project TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_meta TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_accessibility TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_publication TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_hyperlink TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_organism TO gus_r;
@@ -188,6 +198,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_dependency TO 
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_visibility TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_project TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_meta TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_accessibility TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_publication TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_hyperlink TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_organism TO vdi_w;
