@@ -6,10 +6,10 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset (
   type_name    VARCHAR(64)             NOT NULL,
   type_version VARCHAR(64)             NOT NULL,
   is_deleted   NUMERIC(1) DEFAULT 0    NOT NULL,
-  is_public    NUMERIC(1) DEFAULT 0    NOT NULL
-, accessibility VARCHAR(30)            NOT NULL
-, days_for_approval NUMERIC(20)                  
-, creation_date DATE                   NOT NULL            
+  is_public    NUMERIC(1) DEFAULT 0    NOT NULL,
+  accessibility VARCHAR(30)            NOT NULL,
+  days_for_approval NUMERIC(20) DEFAULT 0 NOT NULL,                
+  creation_date DATE                   NOT NULL            
 );
 
 

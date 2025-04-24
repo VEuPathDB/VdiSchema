@@ -13,7 +13,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset (
 , is_deleted   NUMBER       DEFAULT 0   NOT NULL
 , is_public    NUMBER       DEFAULT 0   NOT NULL
 , accessibility VARCHAR2(30)            NOT NULL
-, days_for_approval NUMBER            
+, days_for_approval NUMBER  DEFAULT 0   NOT NULL           
 , creation_date DATE                    NOT NULL            
 );
 
