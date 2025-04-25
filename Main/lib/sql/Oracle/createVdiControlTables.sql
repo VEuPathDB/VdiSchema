@@ -181,7 +181,7 @@ GRANT SELECT ON VDI_CONTROL_&1..dataset_dependency      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_meta            TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_property        TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_properties      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_publication     TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_hyperlink       TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_organism        TO gus_r;
@@ -196,7 +196,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_dependency      
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project         TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta            TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_property        TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_properties      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_publication     TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_hyperlink       TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_organism        TO vdi_w;
