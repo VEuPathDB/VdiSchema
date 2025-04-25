@@ -1,6 +1,6 @@
-ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD COLUMN accessibility varchar(30);
-ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD COLUMN days_for_approval number;
-ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD COLUMN creation_date DATE;
+ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD accessibility varchar(30);
+ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD days_for_approval number;
+ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD creation_date DATE;
 
 CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_properties (
   dataset_id      VARCHAR2(32)   PRIMARY KEY NOT NULL
@@ -58,9 +58,9 @@ FROM
     and d.is_deleted = 0;
 
 
-GRANT SELECT ON VDI_CONTROL_@SUFFIX@.dataset_property   TO gus_r;
+GRANT SELECT ON VDI_CONTROL_@SUFFIX@.dataset_properties   TO gus_r;
 GRANT SELECT ON VDI_CONTROL_@SUFFIX@.AvailableUserDatasets   TO gus_r;
 
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_@SUFFIX@.dataset_property     TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_@SUFFIX@.dataset_properties     TO vdi_w;
 
 
