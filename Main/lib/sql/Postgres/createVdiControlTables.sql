@@ -1,9 +1,4 @@
--- This file is parameterized by a LIFECYCLE_CAMPUS suffix (eg qa_n) to append to 'VDI_CONTROL_' in order to form the target VDI control schema.  The macro &1. is filled in with that value.
-
--- In Oracle, that schema must be first created by DBA
---   CREATE USER &1.
---   IDENTIFIED BY "<password>"
---   QUOTA UNLIMITED ON users;
+-- This file is parameterized by a LIFECYCLE_CAMPUS suffix (eg qa_n) to append to 'VDI_CONTROL_' in order to form the target VDI control schema.  The macro :VAR1. is filled in with that value.
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset (
   dataset_id   VARCHAR(32) PRIMARY KEY NOT NULL,
@@ -11,7 +6,10 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset (
   type_name    VARCHAR(64)             NOT NULL,
   type_version VARCHAR(64)             NOT NULL,
   is_deleted   NUMERIC(1) DEFAULT 0    NOT NULL,
-  is_public    NUMERIC(1) DEFAULT 0    NOT NULL
+  is_public    NUMERIC(1) DEFAULT 0    NOT NULL,
+  accessibility VARCHAR(30)            NOT NULL,
+  days_for_approval NUMERIC(20) DEFAULT 0 NOT NULL,                
+  creation_date DATE                   NOT NULL            
 );
 
 
@@ -24,6 +22,12 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_meta (
   summary           VARCHAR(4000),
   description       TEXT,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
+);
+
+CREATE TABLE VDI_CONTROL_:VAR1dataset_properties (
+  dataset_id      VARCHAR(32)   PRIMARY KEY NOT NULL
+, json            JSON          NOT NULL
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset (dataset_id)
 );
 
 
@@ -121,6 +125,8 @@ SELECT v.dataset_id AS user_dataset_id
   , o.is_owner
   , d.type_name AS type
   , d.is_public
+  , o.accessibility
+  , m.creation_date
   , m.name
   , m.description
   , m.summary
@@ -144,10 +150,10 @@ FROM VDI_CONTROL_:VAR1.dataset_visibility v
          AND status = 'complete'
      ) i
    , (
-       SELECT dataset_id, owner AS user_id, 1 AS is_owner
+       SELECT dataset_id, owner AS user_id, 1 AS is_owner, accessibility
        FROM VDI_CONTROL_:VAR1.dataset
        UNION
-       SELECT x.dataset_id, x.user_id, 0 AS is_owner
+       SELECT x.dataset_id, x.user_id, 0 AS is_owner, 'private' as accessibility
        FROM (
               SELECT dataset_id, user_id
               FROM VDI_CONTROL_:VAR1.dataset_visibility
@@ -174,6 +180,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_dependency TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_visibility TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_project TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_meta TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_property TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_publication TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_hyperlink TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_organism TO gus_r;
@@ -188,6 +195,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_dependency TO 
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_visibility TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_project TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_meta TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_property TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_publication TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_hyperlink TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_organism TO vdi_w;

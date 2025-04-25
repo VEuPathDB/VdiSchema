@@ -12,6 +12,9 @@ CREATE TABLE VDI_CONTROL_&1..dataset (
 , type_version VARCHAR2(64)             NOT NULL
 , is_deleted   NUMBER       DEFAULT 0   NOT NULL
 , is_public    NUMBER       DEFAULT 0   NOT NULL
+, accessibility VARCHAR2(30)            NOT NULL
+, days_for_approval NUMBER  DEFAULT 0   NOT NULL           
+, creation_date DATE                    NOT NULL            
 );
 
 
@@ -23,6 +26,12 @@ CREATE TABLE VDI_CONTROL_&1..dataset_meta (
 , category VARCHAR2(100)
 , summary VARCHAR2(4000)
 , description CLOB
+, FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
+);
+
+CREATE TABLE VDI_CONTROL_&1..dataset_properties (
+  dataset_id      VARCHAR2(32)  PRIMARY KEY NOT NULL
+, json            CLOB    NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
@@ -121,7 +130,8 @@ SELECT
     v.user_id,
     o.is_owner,
     d.type_name as type,
-    d.is_public,
+    o.accessibility,
+    d.creation_date,
     m.name,
     m.description,
     m.summary,
@@ -144,10 +154,10 @@ FROM
      WHERE install_type = 'data'
      AND status = 'complete'
     ) i,
-    (select dataset_id, owner as user_id, 1 as is_owner
+    (select dataset_id, owner as user_id, 1 as is_owner, accessibility
     from VDI_CONTROL_&1..dataset
     union 
-    select x.dataset_id, x.user_id, 0 as is_owner
+    select x.dataset_id, x.user_id, 0 as is_owner, 'private' as accessibility
     from (select dataset_id, user_id 
           from VDI_CONTROL_&1..dataset_visibility
           minus
@@ -171,6 +181,7 @@ GRANT SELECT ON VDI_CONTROL_&1..dataset_dependency      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_meta            TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_property        TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_publication     TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_hyperlink       TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_organism        TO gus_r;
@@ -185,6 +196,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_dependency      
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project         TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta            TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_property        TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_publication     TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_hyperlink       TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_organism        TO vdi_w;
