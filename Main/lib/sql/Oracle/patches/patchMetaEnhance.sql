@@ -2,12 +2,10 @@ ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD COLUMN accessibility varchar(30);
 ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD COLUMN days_for_approval number;
 ALTER TABLE VDI_CONTROL_@SUFFIX@.dataset ADD COLUMN creation_date DATE;
 
-CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_property (
-  dataset_id      VARCHAR2(32)   NOT NULL
-, key    VARCHAR2(40)   
-, value         VARCHAR2(400)
+CREATE TABLE VDI_CONTROL_@SUFFIX@.dataset_properties (
+  dataset_id      VARCHAR2(32)   PRIMARY KEY NOT NULL
+, JSON   CLOB   
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_@SUFFIX@.dataset (dataset_id)
-, PRIMARY KEY (dataset_id, key)
 );
 
 drop VIEW VDI_CONTROL_@SUFFIX@.AvailableUserDatasets;
