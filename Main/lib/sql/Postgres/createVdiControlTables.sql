@@ -126,6 +126,7 @@ SELECT v.dataset_id AS user_dataset_id
   , d.type_name AS type
   , d.is_public
   , o.accessibility
+  , o.is_public
   , m.creation_date
   , m.name
   , m.description
@@ -150,10 +151,10 @@ FROM VDI_CONTROL_:VAR1.dataset_visibility v
          AND status = 'complete'
      ) i
    , (
-       SELECT dataset_id, owner AS user_id, 1 AS is_owner, accessibility
+       SELECT dataset_id, owner AS user_id, 1 AS is_owner, accessibility, is_public
        FROM VDI_CONTROL_:VAR1.dataset
        UNION
-       SELECT x.dataset_id, x.user_id, 0 AS is_owner, 'private' as accessibility
+       SELECT x.dataset_id, x.user_id, 0 AS is_owner, 'private' as accessibility, 0 as is_public
        FROM (
               SELECT dataset_id, user_id
               FROM VDI_CONTROL_:VAR1.dataset_visibility
