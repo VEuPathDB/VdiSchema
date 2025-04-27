@@ -15,6 +15,7 @@ SELECT
     v.user_id,
     o.is_owner,
     d.type_name as type,
+    o.is_public,
     o.accessibility,
     d.creation_date,
     m.name,
@@ -39,10 +40,10 @@ FROM
      WHERE install_type = 'data'
      AND status = 'complete'
     ) i,
-    (select dataset_id, owner as user_id, 1 as is_owner, accessibility
+    (select dataset_id, owner as user_id, 1 as is_owner, accessibility, is_public
     from VDI_CONTROL_@SUFFIX@.dataset
     union 
-    select x.dataset_id, x.user_id, 0 as is_owner, 'private' as accessibility
+    select x.dataset_id, x.user_id, 0 as is_owner, 'private' as accessibility, 0 as is_public
     from (select dataset_id, user_id 
           from VDI_CONTROL_@SUFFIX@.dataset_visibility
           minus

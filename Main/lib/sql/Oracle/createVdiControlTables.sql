@@ -131,6 +131,7 @@ SELECT
     o.is_owner,
     d.type_name as type,
     o.accessibility,
+    o.is_public,
     d.creation_date,
     m.name,
     m.description,
@@ -154,10 +155,10 @@ FROM
      WHERE install_type = 'data'
      AND status = 'complete'
     ) i,
-    (select dataset_id, owner as user_id, 1 as is_owner, accessibility
+    (select dataset_id, owner as user_id, 1 as is_owner, accessibility, is_public
     from VDI_CONTROL_&1..dataset
     union 
-    select x.dataset_id, x.user_id, 0 as is_owner, 'private' as accessibility
+    select x.dataset_id, x.user_id, 0 as is_owner, 'private' as accessibility, 0 as is_public
     from (select dataset_id, user_id 
           from VDI_CONTROL_&1..dataset_visibility
           minus
@@ -181,7 +182,7 @@ GRANT SELECT ON VDI_CONTROL_&1..dataset_dependency      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_project         TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_meta            TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_property        TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_properties      TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_publication     TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_hyperlink       TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_organism        TO gus_r;
@@ -196,7 +197,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_dependency      
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project         TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta            TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_property        TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_properties      TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_publication     TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_hyperlink       TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_organism        TO vdi_w;
