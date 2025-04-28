@@ -26,7 +26,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_meta (
 
 CREATE TABLE VDI_CONTROL_:VAR1dataset_properties (
   dataset_id      VARCHAR(32)   PRIMARY KEY NOT NULL
-, json            JSON          NOT NULL
+, json            JSONB          NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset (dataset_id)
 );
 
