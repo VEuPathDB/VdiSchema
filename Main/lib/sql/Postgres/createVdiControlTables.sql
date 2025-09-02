@@ -5,9 +5,9 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset (
   owner        NUMERIC(20)             NOT NULL,
   type_name    VARCHAR(64)             NOT NULL,
   type_version VARCHAR(64)             NOT NULL,
-  is_deleted   NUMERIC(1) DEFAULT 0    NOT NULL,
-  is_public    NUMERIC(1) DEFAULT 0    NOT NULL,
-  accessibility VARCHAR(30)            NOT NULL CHECK (file_type IN ('public', 'protected', 'private')),
+  deleted_status   NUMERIC(1) DEFAULT 0    NOT NULL, -- 0 = Not Deleted; 1 = Deleted and Uninstalled; 2 = Deleted but not yet Uninstalled
+  is_public    BOOLEAN NOT NULL DEFAULT FALSE,
+  accessibility VARCHAR(30)            NOT NULL, -- ('public', 'protected', 'private')
   days_for_approval NUMERIC(20) DEFAULT 0 NOT NULL,                
   creation_date DATE                   NOT NULL            
 );
@@ -77,7 +77,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_dependency (
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
   dataset_id VARCHAR(32) NOT NULL,
   external_id  VARCHAR(30) NOT NULL,
-  type       VARCHAR(30) NOT NULL CHECK (type IN ('PubMed', 'DOI')),
+  type       VARCHAR(30) NOT NULL, -- ('PubMed', 'DOI')
   citation   VARCHAR(2000),
   is_primary    NUMBER       DEFAULT 0   NOT NULL,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id),
@@ -86,7 +86,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_hyperlink (
   dataset_id     VARCHAR(32)  NOT NULL,
-  url            VARCHAR(200) NOT NULL,
+  url            VARCHAR(2000) NOT NULL,
   description    VARCHAR(4000),
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id),
   PRIMARY KEY (dataset_id, url)
@@ -107,18 +107,18 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_contact (
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
-CREATE INDEX VDI_CONTROL_:VAR1.idx_dataset_contact ON dataset_contact(dataset_id);
+CREATE INDEX idx_dataset_contact ON VDI_CONTROL_:VAR1.dataset_contact(dataset_id);
 
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_organism (
-    dataset_id VARCHAR(255) NOT NULL,
-    organism_type VARCHAR(50) NOT NULL CHECK (organism_type IN ('experimental', 'host')),
+    dataset_id VARCHAR(32) NOT NULL,
+    organism_type VARCHAR(50) NOT NULL, -- ('experimental', 'host'),
     species VARCHAR(500) NOT NULL,
     strain VARCHAR(500) NOT NULL,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
-CREATE INDEX VDI_CONTROL_:VAR1.idx_dataset_organism ON dataset_organism(dataset_id);
+CREATE INDEX idx_dataset_organism ON VDI_CONTROL_:VAR1.dataset_organism(dataset_id);
 
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_funding_award (
@@ -129,11 +129,11 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_funding_award (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
-CREATE INDEX VDI_CONTROL_:VAR1.idx_dataset_fa ON dataset_funding_award(dataset_id);
+CREATE INDEX idx_dataset_fa ON VDI_CONTROL_:VAR1.dataset_funding_award(dataset_id);
 
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_characteristics (
-    dataset_id VARCHAR(255) NOT NULL,
+    dataset_id VARCHAR(32) PRIMARY KEY NOT NULL,
     study_design TEXT,
     study_type VARCHAR(500),
     participant_ages VARCHAR(500),
@@ -146,45 +146,43 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_characteristics (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
-CREATE INDEX VDI_CONTROL_:VAR1.idx_dataset_characteristics ON dataset_characteristics(dataset_id);
-
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_country (
-    dataset_id INTEGER NOT NULL,
+    dataset_id varchar(32) NOT NULL,
     country VARCHAR(255) NOT NULL,
     PRIMARY KEY (dataset_id, country),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_species (
-    dataset_id INTEGER NOT NULL,
+    dataset_id varchar(32) NOT NULL,
     species VARCHAR(500) NOT NULL,
     PRIMARY KEY (dataset_id, species),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_disease (
-    dataset_id INTEGER NOT NULL,
+    dataset_id varchar(32) NOT NULL,
     disease VARCHAR(500) NOT NULL,
     PRIMARY KEY (dataset_id, disease),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_associated_factor (
-    dataset_id INTEGER NOT NULL,
+    dataset_id varchar(32) NOT NULL,
     factor VARCHAR(500) NOT NULL,
     PRIMARY KEY (dataset_id, factor),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_sample_type (
-    dataset_id INTEGER NOT NULL,
+    dataset_id varchar(32) NOT NULL,
     type VARCHAR(500) NOT NULL,
     PRIMARY KEY (dataset_id, type),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_doi (
-    dataset_id VARCHAR(255) NOT NULL,
+    dataset_id VARCHAR(32) NOT NULL,
     doi VARCHAR(500) NOT NULL,
     description TEXT,
     PRIMARY KEY (dataset_id, doi),
@@ -192,7 +190,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_doi (
 );
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_bioproject_id (
-    dataset_id VARCHAR(255) NOT NULL,
+    dataset_id VARCHAR(32) NOT NULL,
     bioproject_id VARCHAR(255) NOT NULL,
     description TEXT,
     PRIMARY KEY (dataset_id, bioproject_id),
@@ -200,14 +198,14 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_bioproject_id (
 );
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_link (
-    dataset_id VARCHAR(255) NOT NULL,
+    dataset_id VARCHAR(32) NOT NULL,
     dataset_uri VARCHAR(2048) NOT NULL,
     shares_records BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (dataset_id, dataset_uri),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
     );
 
-CREATE INDEX idx_linked_datasets_dataset ON linked_datasets(dataset_id);
+CREATE INDEX idx_dataset_link ON VDI_CONTROL_:VAR1.dataset_link(dataset_id);
 
 -- convenience view showing datasets visible to a user that are fully installed, and not deleted
 -- application code should use this view to find datasets a user can use
