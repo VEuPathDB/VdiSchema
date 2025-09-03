@@ -75,14 +75,12 @@ if ($drop && !$dontAsk) {
 }
 
 my @create = qw(
-  createVdiSchemas.sql
   createVdiControlTables.sql
   createUserDatasetTypeTables.sql
   createEntityGraphTables.sql
 );
 
-# let's skip this until we figure out the permissions and deployment (i.e., all databases are owned by gus_w)
-# @create = ('createVdiSchemas.sql', @create) if $dbVendor eq 'Postgres';  # for oracle DBA must do this step
+@create = ('createVdiSchemas.sql', @create) if $dbVendor eq 'Postgres';  # for oracle, DBA must do this step
 
 if ($create) {
   for my $sqlFile (@create) {
