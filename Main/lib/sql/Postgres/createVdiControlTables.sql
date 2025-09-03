@@ -1,10 +1,11 @@
--- This file is parameterized by a LIFECYCLE_CAMPUS suffix (eg qa_n) to append to 'VDI_CONTROL_' in order to form the target VDI control schema.  The macro :VAR1. is filled in with that value.
+ -- This file is parameterized by a LIFECYCLE_CAMPUS suffix (eg qa_n) to append to 'VDI_CONTROL_' in order to form the target VDI control schema.  The macro :VAR1. is filled in with that value.
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset (
   dataset_id   VARCHAR(32) PRIMARY KEY NOT NULL,
   owner        NUMERIC(20)             NOT NULL,
   type_name    VARCHAR(64)             NOT NULL,
   type_version VARCHAR(64)             NOT NULL,
+  category     VARCHAR(64)             NOT NULL,
   deleted_status   NUMERIC(1) DEFAULT 0    NOT NULL, -- 0 = Not Deleted; 1 = Deleted and Uninstalled; 2 = Deleted but not yet Uninstalled
   is_public    BOOLEAN NOT NULL DEFAULT FALSE,
   accessibility VARCHAR(30)            NOT NULL, -- ('public', 'protected', 'private')
@@ -20,6 +21,8 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_meta (
   description       TEXT,
   program_name      VARCHAR(300),
   project_name      VARCHAR(300),  -- eg PRISM
+  short_attribution VARCHAR(40),  
+  short_name        VARCHAR(40),  -- eg PRISM
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
@@ -214,12 +217,15 @@ SELECT v.dataset_id AS user_dataset_id
   , v.user_id
   , o.is_owner
   , d.type_name AS type
+  , d.category
   , o.accessibility
   , o.is_public
   , d.creation_date
   , m.name
   , m.description
   , m.summary
+  , m.short_attribution
+  , m.short_name
   , p.project_id
 FROM VDI_CONTROL_:VAR1.dataset_visibility v
    , VDI_CONTROL_:VAR1.dataset d
