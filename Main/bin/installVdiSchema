@@ -75,6 +75,7 @@ if ($drop && !$dontAsk) {
 }
 
 my @create = qw(
+  createVdiSchemas.sql
   createVdiControlTables.sql
   createUserDatasetTypeTables.sql
   createEntityGraphTables.sql
