@@ -76,7 +76,7 @@ my $dry = $dryRun ? "DRY RUN -" : "";
 foreach my $d (@dbDescrips) {
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
-      my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.$campusName.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
+      my $cmd =  "installVdiSchema --dbName $d->{name} --dbHost $d->{host}.$campusName.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
       $cmd = "$cmd >> $logFile";
       print STDERR "\n$dry Running cmd: $cmd\n";
       if (!$dryRun) {system($cmd) && print STDERR "Failed: $!\n";}

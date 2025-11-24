@@ -4,7 +4,6 @@
   <!-- oooooooooooooooooooooooooo  Dependencies  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <import file="${projectsDir}/GUS/build.xml" />
   <import file="${projectsDir}/SchemaInstallUtils/build.xml" />
 
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
