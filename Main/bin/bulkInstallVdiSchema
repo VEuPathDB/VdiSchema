@@ -16,12 +16,12 @@ my ($dbDescriptorsStr, $campusName, $drop, $create, $logFile, $dryRun, $campuses
   "drop!"               => \$drop,
   "dryRun!"             => \$dryRun,
   "dbDescriptors=s"     => \$dbDescriptorsStr,
-  "campuses=s"          => \$campusesStr,
+  "campusInitials=s"    => \$campusesStr,
   "lifecycles=s"        => \$lifeCyclesStr);
 
 my @dbDescriptors = split(/,\S*/, $dbDescriptorsStr);
-my @campuses = split(/,\S*/, $campusesStr);
-my @lifecycles = split(/,\S*/, $lifeCyclesStr);
+my @campuses = split(/,\s*/, $campusesStr);
+my @lifecycles = split(/,\s*/, $lifeCyclesStr);
 
 if (($create + $drop != 1) || scalar(@dbDescriptors < 1) || scalar(@campuses) < 1 || scalar(@lifecycles) < 1) {
   die "
@@ -32,7 +32,7 @@ Can target multiple databases, but they all must be on the same campus (controll
 
 Host is of the form ares8 or peach
 
-Usage: bulkInstallVdiSchema --logFile file --campusName [--create | --drop] --dbDescriptors descriptors --campuses campuses --lifeCycles lifecycles [--dryRun]
+Usage: bulkInstallVdiSchema --logFile file --dbCampusName [--create | --drop] --dbDescriptors descriptors --campusInitials campuses --lifeCycles lifecycles [--dryRun]
 
 Where:
   - logFile: captures log of installVdiSchema runs
@@ -76,7 +76,7 @@ my $dry = $dryRun ? "DRY RUN -" : "";
 foreach my $d (@dbDescrips) {
   foreach my $lifecycle (@lifecycles) {
     foreach my $campus (@campuses) {
-      my $cmd = cwd() . "/installVdiSchema --dbName $d->{name} --dbHost $d->{host}.$campusName.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
+      my $cmd =  "installVdiSchema --dbName $d->{name} --dbHost $d->{host}.$campusName.apidb.org $flag --lifecycle $lifecycle --campus $campus --dontAsk";
       $cmd = "$cmd >> $logFile";
       print STDERR "\n$dry Running cmd: $cmd\n";
       if (!$dryRun) {system($cmd) && print STDERR "Failed: $!\n";}
