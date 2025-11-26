@@ -97,7 +97,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_hyperlink (
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_contact (
   dataset_id  VARCHAR(32)  NOT NULL,
-  is_primary  NUMERIC(1)   NOT NULL,
+  is_primary  BOOLEAN DEFAULT FALSE  NOT NULL,
   first_name  VARCHAR(255) NOT NULL,
   middle_name VARCHAR(255),
   last_name   VARCHAR(255) NOT NULL,
