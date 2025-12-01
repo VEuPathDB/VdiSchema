@@ -102,10 +102,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_contact (
   last_name   VARCHAR(255) NOT NULL,
   email       VARCHAR(4000),
   affiliation VARCHAR(4000),
- -- city        VARCHAR(200),
- -- state       VARCHAR(200),
   country     VARCHAR(200),
- -- address     VARCHAR(1000),
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
