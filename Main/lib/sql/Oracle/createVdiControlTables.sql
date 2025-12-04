@@ -113,7 +113,7 @@ CREATE INDEX idx_dataset_contact ON VDI_CONTROL_&1..dataset_contact(dataset_id);
 
 CREATE TABLE VDI_CONTROL_&1..dataset_organism (
   dataset_id  VARCHAR2(32)   NOT NULL
-, organism_abbrev    VARCHAR2(50) NOT NULL
+, organism_type    VARCHAR2(50) NOT NULL
 , species    VARCHAR2(500) NOT NULL
 , strain    VARCHAR2(500) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
