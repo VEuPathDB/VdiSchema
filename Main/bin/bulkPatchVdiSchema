@@ -2,11 +2,13 @@
 
 use strict;
 use Getopt::Long;
+use lib "$ENV{GUS_HOME}/lib/perl";
+use SchemaInstallUtils::Main::Utils qw(getDbh);
 use DBI;
 
 $| = 1;
 
-my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
+my @envVars = ('DB_PLATFORM', 'DB_HOST', 'DB_USER', 'DB_PASS');
 my $envStr = '$' . join(", \$", @envVars);
 my ($dbNamesStr, $sqlFile, $forReal);
 
@@ -33,7 +35,7 @@ Usage: bulkPatchVdiSchema --dbNames 'plas-inc, toxo-inc' --sqlFile myFile [--for
 Required environment variables: $envStr
 
 Include the following in your bash environment or on the command line preceding the command below:
-export DB_PLATFORM=Oracle export DB_USER=MY-LOGIN export DB_PASS=MY-PASSWORD
+export DB_PLATFORM=Postgres DB_HOST=ares13 DB_USER=MY-LOGIN export DB_PASS=MY-PASSWORD
 
 Example: ./bulkPatchVdiSchema --dbNames 'plas-inc, toxo-inc' --sqlFile myfile
 
@@ -51,8 +53,7 @@ my $sqls = do { local $/; <$fh> };
 my @sqlList = split(/;\s+/, $sqls);
 
 foreach my $dbname (@dbNames) {
-  my $dbh = DBI->connect("dbi:Oracle:$dbname", $ENV{DB_USER}, $ENV{DB_PASS})
-    || die "Couldn't connect to database $dbname: " . DBI->errstr;
+  my $dbh = getDbh($dbname, $ENV{DB_HOST}, $ENV{DB_PLATFORM}, $ENV{DB_USER}, $ENV{DB_PASS});
   $dbh->{RaiseError} = 1;
   $dbh->{AutoCommit} = 1;
   print STDERR "Database: $dbname\n";
