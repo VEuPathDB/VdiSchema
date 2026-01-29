@@ -2,7 +2,7 @@
 
 use strict;
 use FindBin;
-use lib "$FindBin::Bin/../lib/perl";
+use lib "$ENV{GUS_HOME}/lib/perl";
 use Getopt::Long;
 use SchemaInstallUtils::Main::Utils qw(runSql dropSchemaSetTables dropSchemaSetPostgres getDbh);
 use DBI;

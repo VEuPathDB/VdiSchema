@@ -61,6 +61,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset_visibility (
 CREATE TABLE VDI_CONTROL_&1..dataset_project (
   dataset_id VARCHAR2(32)     PRIMARY KEY NOT NULL
 , project_id VARCHAR2(64) NOT NULL
+, project_display_name VARCHAR2(64) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
