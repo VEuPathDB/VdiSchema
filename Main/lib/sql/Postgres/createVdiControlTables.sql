@@ -82,6 +82,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
   dataset_id VARCHAR(32) NOT NULL,
   external_id  VARCHAR(30) NOT NULL,
   type       VARCHAR(30) NOT NULL, -- ('PubMed', 'DOI')
+  citation  text,
   is_primary  BOOLEAN     DEFAULT FALSE  NOT NULL,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id),
   PRIMARY KEY (dataset_id, external_id)
