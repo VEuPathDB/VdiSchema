@@ -82,6 +82,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
   dataset_id VARCHAR(32) NOT NULL,
   external_id  VARCHAR(30) NOT NULL,
   type       VARCHAR(30) NOT NULL, -- ('PubMed', 'DOI')
+  citation  text,
   is_primary  BOOLEAN     DEFAULT FALSE  NOT NULL,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id),
   PRIMARY KEY (dataset_id, external_id)
@@ -199,9 +200,10 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_bioproject_id (
 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_link (
     dataset_id VARCHAR(32) NOT NULL,
-    dataset_uri VARCHAR(2048) NOT NULL,
+    linked_dataset_id VARCHAR(500) NOT NULL,
+    linked_dataset_type VARCHAR(5) NOT NULL, -- VDI or WDK
     shares_records BOOLEAN NOT NULL DEFAULT FALSE,
-    PRIMARY KEY (dataset_id, dataset_uri),
+    PRIMARY KEY (dataset_id, linked_dataset_id),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
     );
 

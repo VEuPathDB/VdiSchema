@@ -87,6 +87,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset_publication (
   dataset_id  VARCHAR2(32)   NOT NULL
 , external_id        VARCHAR2(30) NOT NULL
 , type         VARCHAR2(30) 
+, citation         VARCHAR2(4000) 
 , is_primary    NUMBER       DEFAULT 0  NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
@@ -198,9 +199,10 @@ CREATE TABLE VDI_CONTROL_&1..dataset_bioproject_id (
 
 CREATE TABLE VDI_CONTROL_&1..dataset_link (
     dataset_id VARCHAR2(32) NOT NULL,
-    dataset_uri VARCHAR2(2048) NOT NULL,
+    linked_dataset_id VARCHAR2(500) NOT NULL,
+    linked_dataset_type VARCHAR2(5) NOT NULL,  -- VDI or WDK
     shares_records NUMBER(1) DEFAULT 0 NOT NULL,
-    PRIMARY KEY (dataset_id, dataset_uri),
+    PRIMARY KEY (dataset_id, linked_dataset_id),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset(dataset_id)
     );
 
