@@ -161,10 +161,10 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_species (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
-CREATE TABLE VDI_CONTROL_:VAR1.dataset_disease (
+CREATE TABLE VDI_CONTROL_:VAR1.dataset_outcome (
     dataset_id varchar(32) NOT NULL,
-    disease VARCHAR(500) NOT NULL,
-    PRIMARY KEY (dataset_id, disease),
+    outcome VARCHAR(500) NOT NULL,
+    PRIMARY KEY (dataset_id, outcome),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
@@ -280,7 +280,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_funding_award TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_characteristics TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_country TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_species TO gus_r;
-GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_disease TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_outcome TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_associated_factor TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_sample_type TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_doi TO gus_r;
@@ -304,7 +304,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_funding_award 
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_characteristics TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_country TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_species TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_disease TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_outcome TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_associated_factor TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_sample_type TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_doi TO vdi_w;
