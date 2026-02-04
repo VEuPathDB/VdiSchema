@@ -160,10 +160,10 @@ CREATE TABLE VDI_CONTROL_&1..dataset_species (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset(dataset_id)
 );
 
-CREATE TABLE VDI_CONTROL_&1..dataset_disease (
+CREATE TABLE VDI_CONTROL_&1..dataset_outcome (
     dataset_id VARCHAR2(32) NOT NULL,
-    disease VARCHAR2(500) NOT NULL,
-    PRIMARY KEY (dataset_id, disease),
+    outcome VARCHAR2(500) NOT NULL,
+    PRIMARY KEY (dataset_id, outcome),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset(dataset_id)
 );
 
@@ -260,34 +260,52 @@ FROM
     and d.is_deleted = 0;
 
 
-GRANT SELECT ON VDI_CONTROL_&1..dataset                 TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..sync_control            TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..sync_control TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_install_message TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_install_activity TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_dependency      TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility      TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_project         TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_meta            TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_properties      TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_publication     TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_hyperlink       TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_organism        TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_contact         TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..AvailableUserDatasets   TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_dependency TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_visibility TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_project TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_meta TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_publication TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_hyperlink TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_organism TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_contact TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_funding_award TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_characteristics TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_country TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_species TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_outcome TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_associated_factor TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_sample_type TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_doi TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_bioproject_id TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_link TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..AvailableUserDatasets TO gus_r;
 
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset                 TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..sync_control            TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..sync_control TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_install_message TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_install_activity TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_dependency      TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility      TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project         TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta            TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_properties      TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_publication     TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_hyperlink       TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_organism        TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_contact         TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_dependency TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_visibility TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_publication TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_hyperlink TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_organism TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_contact TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_funding_award TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_characteristics TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_country TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_species TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_outcome TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_associated_factor TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_sample_type TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_doi TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_bioproject_id TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_link TO vdi_w;
 
 GRANT REFERENCES ON VDI_CONTROL_&1..dataset TO VDI_DATASETS_&1;
 GRANT CREATE SESSION, CREATE TABLE, CREATE ANY TABLE, CREATE VIEW, CREATE ANY INDEX, CREATE SEQUENCE TO VDI_DATASETS_&1;
