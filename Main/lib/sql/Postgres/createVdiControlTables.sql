@@ -19,10 +19,12 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_meta (
   name              VARCHAR(1024)           NOT NULL,
   summary           VARCHAR(4000),
   description       TEXT,
+  disclaimer        TEXT,
   program_name      VARCHAR(300),
   project_name      VARCHAR(300),  -- eg PRISM
   short_attribution VARCHAR(40),  
   short_name        VARCHAR(40),  -- eg PRISM
+  disclaimer        TEXT,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
@@ -111,17 +113,6 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_contact (
 CREATE INDEX idx_dataset_contact ON VDI_CONTROL_:VAR1.dataset_contact(dataset_id);
 
 
-CREATE TABLE VDI_CONTROL_:VAR1.dataset_organism (
-    dataset_id VARCHAR(32) NOT NULL,
-    organism_type VARCHAR(50) NOT NULL, -- ('experimental', 'host'),
-    species VARCHAR(500) NOT NULL,
-    strain VARCHAR(500) NOT NULL,
-  FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
-);
-
-CREATE INDEX idx_dataset_organism ON VDI_CONTROL_:VAR1.dataset_organism(dataset_id);
-
-
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_funding_award (
     dataset_id VARCHAR(255) NOT NULL,
     agency VARCHAR(500) NOT NULL,
@@ -165,6 +156,14 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_outcome (
     dataset_id varchar(32) NOT NULL,
     outcome VARCHAR(500) NOT NULL,
     PRIMARY KEY (dataset_id, outcome),
+    FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
+);
+
+CREATE TABLE VDI_CONTROL_:VAR1.dataset_source (
+    dataset_id varchar(32) NOT NULL,
+    url TEXT NOT NULL,
+    version TEXT NOT NULL,
+    PRIMARY KEY (dataset_id, url, version),
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
@@ -223,6 +222,7 @@ SELECT v.dataset_id AS user_dataset_id
   , m.name
   , m.description
   , m.summary
+  , m.disclaimer
   , m.short_attribution
   , m.short_name
   , p.project_id
@@ -274,7 +274,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_project TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_meta TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_publication TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_hyperlink TO gus_r;
-GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_organism TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_source TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_contact TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_funding_award TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_characteristics TO gus_r;
@@ -298,7 +298,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_project TO vdi
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_meta TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_publication TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_hyperlink TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_organism TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_source TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_contact TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_funding_award TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_characteristics TO vdi_w;

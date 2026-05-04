@@ -27,6 +27,7 @@ CREATE TABLE VDI_CONTROL_&1..dataset_meta (
 , short_attribution VARCHAR2(300)
 , summary VARCHAR2(4000)
 , description CLOB
+, disclaimer  CLOB
 , program_name      VARCHAR2(300)
 , project_name      VARCHAR2(300)  -- eg PRISM
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
@@ -113,11 +114,10 @@ CREATE TABLE VDI_CONTROL_&1..dataset_contact (
 
 CREATE INDEX idx_dataset_contact ON VDI_CONTROL_&1..dataset_contact(dataset_id);
 
-CREATE TABLE VDI_CONTROL_&1..dataset_organism (
+CREATE TABLE VDI_CONTROL_&1..dataset_source (
   dataset_id  VARCHAR2(32)   NOT NULL
-, organism_type    VARCHAR2(50) NOT NULL
-, species    VARCHAR2(500) NOT NULL
-, strain    VARCHAR2(500) NOT NULL
+, url    VARCHAR2(500) NOT NULL
+, version    VARCHAR2(500) NOT NULL
 , FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_&1..dataset (dataset_id)
 );
 
@@ -225,6 +225,7 @@ SELECT
     m.short_name,
     m.short_attribution,
     m.category,
+    m.disclaimer,
     p.project_id
 FROM
     VDI_CONTROL_&1..dataset_visibility v,
@@ -270,7 +271,7 @@ GRANT SELECT ON VDI_CONTROL_&1..dataset_project TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_meta TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_publication TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_hyperlink TO gus_r;
-GRANT SELECT ON VDI_CONTROL_&1..dataset_organism TO gus_r;
+GRANT SELECT ON VDI_CONTROL_&1..dataset_source TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_contact TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_funding_award TO gus_r;
 GRANT SELECT ON VDI_CONTROL_&1..dataset_characteristics TO gus_r;
@@ -294,7 +295,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_project TO vdi_w
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_meta TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_publication TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_hyperlink TO vdi_w;
-GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_organism TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_source TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_contact TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_funding_award TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_&1..dataset_characteristics TO vdi_w;
