@@ -225,6 +225,7 @@ SELECT
     m.short_name,
     m.short_attribution,
     m.category,
+    m.disclaimer,
     p.project_id
 FROM
     VDI_CONTROL_&1..dataset_visibility v,
