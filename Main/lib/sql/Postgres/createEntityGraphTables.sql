@@ -76,20 +76,19 @@ CREATE TABLE VDI_DATASETS_:VAR1.AttributeGraph
     is_multi_valued numeric,
     is_repeated numeric(1),
     is_temporal numeric(1),
-    lower_quartile character varying(10),
-    mean character varying(16),
-    median character varying(10),
-    parent_stable_id character varying(255),
+    lower_quartile text,
+    mean text,
+    median text,
+    parent_stable_id text,
     "precision" numeric(10),
     provider_label text,
-    range_max character varying(10),
-    range_min character varying(10),
-    scale character varying(1),
-    unit character varying(1),
-    upper_quartile character varying(10),
-    variable_spec_to_impute_zeroes_for character varying(200),
-    vocabulary character varying(61),
-    weighting_variable_spec character varying(200),
+    range_max text,
+    range_min text,
+    scale text,
+    unit text,
+    upper_quartile text,
+    variable_spec_to_impute_zeroes_for text,
+    weighting_variable_spec text,
   FOREIGN KEY (study_stable_id) REFERENCES VDI_DATASETS_:VAR1.study(stable_id),
   PRIMARY KEY (study_stable_id, stable_id)
 );
@@ -101,8 +100,8 @@ GRANT SELECT ON VDI_DATASETS_:VAR1.AttributeGraph TO gus_r;
 
 CREATE TABLE VDI_DATASETS_:VAR1.AttributeCategoricalValue
 (
-    stable_id character varying(255) NOT NULL,
-    study_stable_id character varying(255) NOT NULL,
+    stable_id text NOT NULL,
+    study_stable_id text NOT NULL,
     value text NOT NULL,
   FOREIGN KEY (study_stable_id) REFERENCES VDI_DATASETS_:VAR1.study(stable_id),
   PRIMARY KEY (study_stable_id, stable_id)
