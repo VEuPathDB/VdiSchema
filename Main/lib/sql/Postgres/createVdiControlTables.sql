@@ -20,11 +20,10 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_meta (
   summary           VARCHAR(4000),
   description       TEXT,
   disclaimer        TEXT,
-  program_name      VARCHAR(300),
-  project_name      VARCHAR(300),  -- eg PRISM
-  short_attribution VARCHAR(40),  
-  short_name        VARCHAR(40),  -- eg PRISM
-  disclaimer        TEXT,
+  program_name      VARCHAR(300),  -- eg ICEMR phase 2
+  project_name      VARCHAR(300),  -- eg PRISM phase 2
+  short_attribution VARCHAR(40),   -- unused?
+  short_name        VARCHAR(40),  --  unused?
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
@@ -80,6 +79,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_dependency (
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
+-- phase 2
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
   dataset_id VARCHAR(32) NOT NULL,
   external_id  VARCHAR(30) NOT NULL,
@@ -90,6 +90,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_publication (
   PRIMARY KEY (dataset_id, external_id)
 );
 
+-- phase 2
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_hyperlink (
   dataset_id     VARCHAR(32)  NOT NULL,
   url            VARCHAR(2000) NOT NULL,
@@ -112,7 +113,17 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_contact (
 
 CREATE INDEX idx_dataset_contact ON VDI_CONTROL_:VAR1.dataset_contact(dataset_id);
 
+CREATE TABLE VDI_CONTROL_:VAR1.dataset_organism (
+    dataset_id VARCHAR(32) NOT NULL,
+    organism_type VARCHAR(50) NOT NULL, -- ('experimental', 'host'),
+    species VARCHAR(500) NOT NULL,
+    strain VARCHAR(500) NOT NULL,
+  FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
+);
 
+CREATE INDEX idx_dataset_organism ON VDI_CONTROL_:VAR1.dataset_organism(dataset_id);
+
+-- phase 2
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_funding_award (
     dataset_id VARCHAR(255) NOT NULL,
     agency VARCHAR(500) NOT NULL,
@@ -131,6 +142,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_characteristics (
     participant_ages VARCHAR(500),
     sample_year_start SMALLINT,
     sample_year_end SMALLINT,
+    is_field_or_clinical boolean,
     CONSTRAINT valid_year_range CHECK (
         (sample_year_start IS NULL AND sample_year_end IS NULL) OR 
         (sample_year_start IS NOT NULL AND sample_year_end IS NOT NULL AND sample_year_start <= sample_year_end)
@@ -181,6 +193,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_sample_type (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
+-- phase 2 
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_doi (
     dataset_id VARCHAR(32) NOT NULL,
     doi VARCHAR(500) NOT NULL,
@@ -189,6 +202,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_doi (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
+-- phase 2
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_bioproject_id (
     dataset_id VARCHAR(32) NOT NULL,
     bioproject_id VARCHAR(255) NOT NULL,
@@ -197,6 +211,7 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_bioproject_id (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
+-- phase 2
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_link (
     dataset_id VARCHAR(32) NOT NULL,
     linked_dataset_id VARCHAR(500) NOT NULL,
@@ -276,6 +291,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_publication TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_hyperlink TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_source TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_contact TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_organism TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_funding_award TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_characteristics TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_country TO gus_r;
@@ -300,6 +316,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_publication TO
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_hyperlink TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_source TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_contact TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_organism TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_funding_award TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_characteristics TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_country TO vdi_w;
