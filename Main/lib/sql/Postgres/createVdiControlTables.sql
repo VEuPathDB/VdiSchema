@@ -24,7 +24,6 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_meta (
   project_name      VARCHAR(300),  -- eg PRISM
   short_attribution VARCHAR(40),  
   short_name        VARCHAR(40),  -- eg PRISM
-  disclaimer        TEXT,
   FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
