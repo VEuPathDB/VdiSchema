@@ -166,6 +166,14 @@ CREATE TABLE VDI_CONTROL_:VAR1.dataset_source (
     FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
 );
 
+CREATE TABLE VDI_CONTROL_:VAR1.dataset_organism (
+    dataset_id varchar(32) NOT NULL,
+    species TEXT NOT NULL,
+    strain TEXT NOT NULL,
+    organism_type TEXT NOT NULL,    -- 'experimental' or 'host'
+    FOREIGN KEY (dataset_id) REFERENCES VDI_CONTROL_:VAR1.dataset(dataset_id)
+);
+
 CREATE TABLE VDI_CONTROL_:VAR1.dataset_associated_factor (
     dataset_id varchar(32) NOT NULL,
     factor VARCHAR(500) NOT NULL,
@@ -274,6 +282,7 @@ GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_meta TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_publication TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_hyperlink TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_source TO gus_r;
+GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_organism TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_contact TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_funding_award TO gus_r;
 GRANT SELECT ON VDI_CONTROL_:VAR1.dataset_characteristics TO gus_r;
@@ -298,6 +307,7 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_meta TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_publication TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_hyperlink TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_source TO vdi_w;
+GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_organism TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_contact TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_funding_award TO vdi_w;
 GRANT DELETE, INSERT, SELECT, UPDATE ON VDI_CONTROL_:VAR1.dataset_characteristics TO vdi_w;
