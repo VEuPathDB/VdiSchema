@@ -52,62 +52,47 @@ CREATE INDEX entitytypegraph_ix_1 ON VDI_DATASETS_:VAR1.entitytypegraph(study_st
 CREATE INDEX entitytypegraph_ix_2 ON VDI_DATASETS_:VAR1.entitytypegraph(parent_stable_id);
 
 ---------------------------------------------------------------------
-CREATE TABLE VDI_DATASETS_:VAR1.AttributeGraph
+
+-- Used by the WDK UserDataset record and site search
+CREATE TABLE VDI_DATASETS_:VAR1.Variable
 (
     stable_id character varying(255) NOT NULL,
-    study_stable_id character varying(255) NOT NULL,
-    bin_width_computed character varying(4),
-    bin_width_override character varying(1),
-    data_shape character varying(11),
-    data_type character varying(7),
+    study_stable_id character varying(255) NOT NULL, 
+    entity_stable_id character varying(255) NOT NULL,
+    dataset_id character varying(255) NOT NULL,
     definition text,
     display_name text,
-    display_order numeric(3),
-    display_range_max character varying(16),
-    display_range_min character varying(16),
-    display_type character varying(20),
-    distinct_values_count numeric(10),
-    has_study_dependent_vocabulary numeric(1),
-    has_values numeric(10),
-    hidden character varying(64),
-    impute_zero numeric(1),
-    is_featured numeric(1),
-    is_merge_key numeric(1),
-    is_multi_valued numeric,
-    is_repeated numeric(1),
-    is_temporal numeric(1),
-    lower_quartile text,
-    mean text,
-    median text,
-    parent_stable_id text,
-    "precision" numeric(10),
+    data_shape text,
+    data_type text,
+    display_range_max text,
+    display_range_min text,
     provider_label text,
-    range_max text,
-    range_min text,
-    scale text,
-    unit text,
-    upper_quartile text,
-    variable_spec_to_impute_zeroes_for text,
-    weighting_variable_spec text,
-  FOREIGN KEY (study_stable_id) REFERENCES VDI_DATASETS_:VAR1.study(stable_id),
-  PRIMARY KEY (study_stable_id, stable_id)
+    hidden text,
+  FOREIGN KEY (dataset_id) REFERENCES VDI_DATASETS_:VAR1.study(user_dataset_id),
+  FOREIGN KEY (study_stable_id, entity_stable_id) REFERENCES VDI_DATASETS_:VAR1.entitytypegraph(study_stable_id, stable_id),
+  PRIMARY KEY (dataset_id, entity_stable_id, stable_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.AttributeGraph TO vdi_w;
-GRANT SELECT ON VDI_DATASETS_:VAR1.AttributeGraph TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.Variable TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.Variable TO gus_r;
 
 ----------------------------------------------------------------------
 
-CREATE TABLE VDI_DATASETS_:VAR1.AttributeCategoricalValue
+-- Used by the WDK UserDataset record and site search
+CREATE TABLE VDI_DATASETS_:VAR1.VariableCategoricalValue
 (
     stable_id text NOT NULL,
-    study_stable_id text NOT NULL,
+    study_stable_id character varying(255) NOT NULL, 
+    entity_stable_id text NOT NULL,
+    dataset_id text NOT NULL,
     value text NOT NULL,
-  FOREIGN KEY (study_stable_id) REFERENCES VDI_DATASETS_:VAR1.study(stable_id),
-  PRIMARY KEY (study_stable_id, stable_id)
+  FOREIGN KEY (dataset_id) REFERENCES VDI_DATASETS_:VAR1.study(user_dataset_id),
+  FOREIGN KEY (study_stable_id, entity_stable_id) REFERENCES VDI_DATASETS_:VAR1.entitytypegraph(study_stable_id, stable_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.AttributeCategoricalValue TO vdi_w;
-GRANT SELECT ON VDI_DATASETS_:VAR1.AttributeCategoricalValue TO gus_r;
+CREATE INDEX vcv_ix_1 ON VDI_DATASETS_:VAR1.VariableCategoricalValue(dataset_id, entity_stable_id, stable_id);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON VDI_DATASETS_:VAR1.VariableCategoricalValue TO vdi_w;
+GRANT SELECT ON VDI_DATASETS_:VAR1.VariableCategoricalValue TO gus_r;
 
 
